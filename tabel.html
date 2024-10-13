@@ -925,7 +925,7 @@ window.exportToPDF1 = (index) => {
     doc.setFontSize(12);
     doc.setFont("helvetica", "bold");
     doc.text("INVOICE", pageWidth / 2, 55, null, null, "center");
-
+xf
     // Date (Below "INVOICE")
     doc.setFontSize(8);
     doc.setFont("helvetica", "normal");
@@ -935,7 +935,9 @@ window.exportToPDF1 = (index) => {
     doc.setFont("helvetica", "bold");
     doc.text("Customer:", 10, 65);
     doc.setFont("helvetica", "normal");
-    doc.text(order.customerName, 17, 65);
+    // Assuming 'doc' is your jsPDF instance
+doc.text(order.customerName, 25, 65, { align: "left" });
+
 
     // Add a horizontal line before the table
     doc.line(10, 70, pageWidth - 10, 70);
