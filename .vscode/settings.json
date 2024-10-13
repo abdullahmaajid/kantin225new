@@ -1,3 +1,4 @@
 {
-    "livePreview.defaultPreviewPath": "/dashboard.html"
+    "livePreview.defaultPreviewPath": "/dashboard.html",
+    "liveServer.settings.port": 5501
 }

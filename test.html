@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kantin 225 - Order Menu</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/react@17/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@17/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/babel-standalone@6/babel.min.js"></script>
+  <style>
+    body {
+      background-color: #f0f0f0; /* Light gray */
+    }
+    
+    /* Styling for the menu items section */
+    .menu-items {
+      height: 635px;
+      overflow-y: auto;
+      width: 635px;
+      display: flex; /* Using Flexbox */
+      flex-wrap: wrap; /* Wrap cards if too many */
+      gap: 20px; /* Space between cards (horizontal and vertical) */
+    }
+    
+    .menu-items .card {
+      width: 195px; /* Set fixed width for cards */
+      transition: transform 0.2s ease; /* Add transition for scaling */
+      border-color: white;
+      margin-bottom: -20px;
+    }
+    
+    /* Adjust the image height */
+    .menu-items .card img {
+      padding: 10px;
+      width: 100%; /* Maintain image width to fit the card */
+      max-height: 180px; /* Increased max height for the image */
+      transition: transform 0.3s; /* Add smooth zoom effect */
+      border-radius: 15px; /* Smooth border radius */
+      margin-bottom: -10px;
+    }
+    
+    .menu-items .card-body {
+      display: flex;
+      flex-direction: column;
+      height: 120px; /* Set a fixed height for the card body to create consistency */
+    }
+    
+    .menu-items .card img:hover {
+      transform: scale(1.05); /* Scale the image slightly on hover for a zoom effect */
+    }
+    
+    /* Click effect for cards */
+    .menu-items .card.clicked {
+      transform: scale(1.05); /* Slightly enlarge the card */
+    }
+    
+    .card-title {
+      font-size: 1.2em; /* Set a font size for the item name */
+      text-align: center; /* Center align the title */
+    }
+    
+    .card-text {
+      font-size: 1em; /* Set a font size for the price */
+      text-align: center; /* Center align the text */
+      margin-top: auto; /* Push the price to the bottom of the card */
+      padding-top: 0px; /* Add some space between the name and the price */
+    }
+    
+    /* Filter buttons section */
+    .filter-buttons {
+      display: flex;
+      gap: 10px;
+      justify-content: center; /* Center the buttons */
+      align-items: center; /* Align items vertically in the center */
+    }
+    
+    .filter-button {
+      background-color: white; /* Set background to white */
+      border: 0px solid #dedede; /* Optional: Add border */
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.3s, color 0.3s; /* Add transition for color */
+      padding: 20px;
+      border-radius: 15px; /* Smooth border radius */
+      height: 55px;
+      display: flex; /* Use flexbox to align content */
+      align-items: center; /* Vertical center for logo and text */
+      color: black; /* Default text color */
+    }
+    
+    .filter-button img {
+      width: 40px;
+      height: 40px;
+      margin-right: 15px; /* Add space between image and text */
+    }
+    
+    /* Active state for buttons */
+    .filter-button.active {
+      background-color: red; /* Red background when active */
+      color: white; /* White text when active */
+    }
+    
+    /* Active state for logo */
+    .filter-button.active img {
+      filter: brightness(0) invert(1); /* Change logo to white when active */
+    }
+    
+    /* Hover effect for filter buttons */
+    .filter-button:hover {
+      background-color: #d3d3d3; /* Light gray background on hover */
+      color: black; /* Keep text color black on hover */
+    }
+    
+    .filter-button:hover img {
+      filter: none; /* Keep logo color as is on hover */
+    }
+    
+    /* Styling for the order summary section */
+    .order-summary {
+      background-color: white;
+      padding: 20px;
+      padding-left: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+    
+    .cart-items {
+      height: 350px;
+      max-height: 330px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+    }
+    
+    .checkout-section {
+      border-top: 0px solid #dedede;
+      padding-top: 10px;
+    }
+    
+    /* Table background and styling */
+    .table {
+      background-color: white;
+      width: 100%;
+      border-collapse: collapse;
+      border-color: white;
+    }
+    
+    .table thead {
+      background-color: #f0f0f0; /* Light gray for header */
+    }
+    
+    .table th,
+    .table td {
+      padding: 10px;
+      text-align: center;
+    }
+    
+    .table tbody tr:hover {
+      background-color: #f9f9f9;
+    }
+    
+    /* Grand total text styling */
+    h4 {
+      margin-top: 20px;
+      font-weight: bold;
+      text-align: right;
+    }
+    
+    /* Remove button styling */
+    .remove-btn {
+      background-color: #ff4d4d;
+      border: none;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .remove-btn:hover {
+      background-color: #ff3333;
+    }
+    
+    /* Styling for table cells */
+    .table td {
+      text-align: center; /* Default text alignment for all cells */
+      vertical-align: middle;
+    }
+    
+    .table td:first-child {
+      text-align: left; /* Left-align the first column (Menu names) */
+      padding-left: 15px; /* Add some padding for better spacing */
+    }
+    
+    .table th {
+      text-align: center;
+    }
+    
+    /* Button styling */
+    .btn {
+      padding: 5px 10px;
+    }
+    
+    .btn-warning {
+      background-color: #ffc107;
+      border: none;
+      color: #fff;
+    }
+    
+    .btn-danger {
+      background-color: #dc3545;
+      border: none;
+      color: #fff;
+    }
+    
+    /* Error message styling */
+    .error-message {
+      color: red;
+    }
+    
+    /* Sidebar styles */
+    .sidebar {
+      background-color: rgba(214, 51, 51, 1);
+      height: 100vh;
+      width: 120px; /* Normal width */
+      padding: 20px;
+      position: fixed;
+      transition: transform 1s ease, width 1s ease; /* Smooth transition */
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center items horizontally */
+      top: 0; /* Align to top */
+      left: 0; /* Align to left */
+    }
+    
+    /* Minimized state for sidebar */
+    .sidebar.minimized {
+      transform: translateX(-100%); /* Move completely out of view to the left */
+    }
+    
+    /* Sidebar item styling */
+    .sidebar-item {
+      display: flex;
+      flex-direction: column; /* Stack icon and text vertically */
+      align-items: center; /* Center items */
+      padding: 10px 0; /* Space between items */
+      color: white; /* Set text color to white */
+      text-decoration: none; /* Remove underline */
+      transition: background 0.3s; /* Smooth background change */
+      width: 100%; /* Take full width for better centering */
+    }
+    
+    .sidebar-item:hover {
+      background-color: rgba(214, 51, 51, 0.8); /* Darker red on hover */
+    }
+    
+    .sidebar-icon {
+      max-width: 30px; /* Size for the icons */
+      margin-bottom: 5px; /* Space between icon and text */
+      filter: brightness(0) invert(1); /* Make icon white */
+    }
+    
+    /* Toggle button styling */
+    .toggle-btn {
+      background: none; /* Remove background */
+      border: none; /* Remove border */
+      outline: none; /* Remove outline */
+      padding: 0; /* Remove padding */
+      cursor: pointer; /* Make it a clickable button */
+      position: absolute; /* Position it to the right */
+      right: -30px; /* Position outside the sidebar */
+      top: 20px; /* Adjust vertical position */
+      transform: translateX(50%); /* Center the button */
+    }
+    
+    .toggle-icon {
+      max-width: 30px; /* Set the size of the image */
+    }
+    
+    /* Content styles */
+    .content {
+      padding: 1px;
+      transition: margin-left 0.3s ease; /* Smooth transition */
+    }
+    
+
+/* Media queries for mobile */
+@media (max-width: 768px) {
+  .sidebar {
+      width: 70px; /* Adjust sidebar width for mobile */
+      height: 2000px;
+  }
+
+  .sidebar.minimized {
+      width: 0; /* No width when minimized for mobile */
+  }
+  #calculateRevenue {
+
+    width: 106px;
+}
+
+#resetRevenue {
+
+  width: 106px;
+}
+
+#reloadData {
+
+  width: 106px;
+}
+/* Default logo size */
+.logo-container img {
+  width: 100%; /* Makes the logo take full width of the container */
+
+}
+}
+    
+/* Custom styles for better responsiveness */
+@media (max-width: 576px) {
+    .filter-buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .filter-button {
+        margin-bottom: 10px; /* Add margin between buttons */
+    }
+
+    .menu-items .card {
+        margin-bottom: 15px; /* Spacing between menu items */
+    }
+}
+
+@media (min-width: 576px) {
+    .filter-buttons {
+        flex-direction: row;
+    }
+
+    .filter-button {
+        margin-right: 10px; /* Spacing for horizontal layout */
+    }
+}
+
+.order-summary {
+    margin-top: 20px;
+}
+
+
+     
+  </style>
+</head>
+<body>
+
+  <div class="sidebar" id="sidebar">
+    <div class="logo-container text-center mb-4">
+        <img src="image/K1PUTIH.png" alt="Kantin Logo" class="img-fluid">
+    </div>
+
+    <a href="dashboard.html" class="sidebar-item">
+        <img src="image/dash.png" alt="Dashboard" class="sidebar-icon">
+        <span></span>
+    </a>
+    <a href="index.html" class="sidebar-item">
+        <img src="image/order.png" alt="Order" class="sidebar-icon">
+        <span></span>
+    </a>
+    <a href="tabel.html" class="sidebar-item">
+        <img src="image/tabel.png" alt="Rekap Data" class="sidebar-icon">
+        <span></span>
+    </a>
+
+    <!-- Toggle Button for collapsing -->
+    <button class="toggle-btn" id="toggleBtn">
+        <img src="image/minimize.png" alt="Toggle Sidebar" class="toggle-icon">
+    </button>
+</div>
+
+
+  <div id="root"></div>
+
+  <script type="text/babel">
+
+    
+    const { useState, useEffect } = React;
+
+    // Menu Items (simulated as local data)
+    const menuItems = [
+  { id: 1, category: "Makanan", name: "Nasi Soto Ayam Campur", price: 10000, img: "image/nasisotocampur1.png" },
+  { id: 2, category: "Makanan", name: "Nasi Pecel", price: 7000, img: "image/nasipecel1.png" },
+  { id: 3, category: "Makanan", name: "Nasi Rames", price: 10000, img: "image/nasirames1.png" },
+  { id: 4, category: "Makanan", name: "Nasi Goreng Telur", price: 12000, img: "image/nasigorengtelur1.png" },
+  { id: 5, category: "Makanan", name: "Nasi Ayam Penyet", price: 14000, img: "image/nasiayampenyet1.png" },
+  { id: 6, category: "Makanan", name: "Nasi Soto Pisah", price: 12000, img: "image/nasisotopisah1.png" },
+  { id: 7, category: "Makanan", name: "Bakmie Goreng", price: 12000, img: "image/bakmiegoreng1.png" },
+  { id: 8, category: "Makanan", name: "Bakmie Rebus", price: 12000, img: "image/bakmierebus1.png" },
+  { id: 9, category: "Makanan", name: "Indomie Goreng", price: 5000, img: "image/indomiegoreng1.png" },
+  { id: 10, category: "Makanan", name: "Indomie Rebus", price: 5000, img: "image/indomierebus1.png" },
+  { id: 11, category: "Makanan", name: "Gado-Gado", price: 13000, img: "image/gadogado1.png" },
+  { id: 12, category: "Makanan", name: "Nasi Putih", price: 3000, img: "image/nasiputih1.png" },
+  { id: 13, category: "Makanan", name: "Magelangan", price: 12000, img: "image/magelangan1.png" },
+  { id: 14, category: "Topping", name: "Telur Dadar", price: 3000, img: "image/telurdadar1.png" },
+  { id: 15, category: "Topping", name: "Telur Ceplok", price: 3000, img: "image/telurceplok1.png" },
+  { id: 16, category: "Topping", name: "Telur Asin", price: 4000, img: "image/telurasin1.png" },
+  { id: 17, category: "Topping", name: "Ayam Suwir", price: 4000, img: "image/ayamsuwir1.png" },
+  { id: 18, category: "Topping", name: "Kremes", price: 2500, img: "image/kremes1.png" },
+  { id: 19, category: "Topping", name: "Tempe Goreng", price: 2000, img: "image/tempegoreng1.png" },
+  { id: 20, category: "Topping", name: "Tahu Goreng", price: 2000, img: "image/tahugoreng1.png" },
+  { id: 21, category: "Topping", name: "Sambal Terasi", price: 3000, img: "image/sambalterasi1.png" },
+  { id: 22, category: "Minuman", name: "Teh Panas", price: 3000, img: "image/tehpanas1.png" },
+  { id: 23, category: "Minuman", name: "Es Teh", price: 3000, img: "image/esteh1.png" },
+  { id: 24, category: "Minuman", name: "Jeruk Panas", price: 4000, img: "image/jerukpanas1.png" },
+  { id: 25, category: "Minuman", name: "Es Jeruk", price: 4000, img: "image/esjeruk1.png" }
+];
+
+    function App() {
+        const [transferProof, setTransferProof] = useState(null);
+        const [filter, setFilter] = useState("All");
+        const [cart, setCart] = useState([]);
+        const [search, setSearch] = useState("");
+        const [customerName, setCustomerName] = useState("");
+        const [selectedDate, setSelectedDate] = useState("");
+        const [paymentMethod, setPaymentMethod] = useState("cash");
+        const [amountPaid, setAmountPaid] = useState(null);
+        const [change, setChange] = useState(0);
+        const [errorMessage, setErrorMessage] = useState("");
+      
+        useEffect(() => {
+          const savedCart = localStorage.getItem("cart");
+          if (savedCart) {
+            setCart(JSON.parse(savedCart));
+          }
+        }, []);
+      
+        useEffect(() => {
+          localStorage.setItem("cart", JSON.stringify(cart));
+        }, [cart]);
+      
+        const filteredItems = menuItems.filter(
+          item => (filter === "All" || item.category === filter) &&
+                  item.name.toLowerCase().includes(search.toLowerCase())
+        );
+      
+        const addToCart = (item) => {
+          setCart(prevCart => {
+            const existingItem = prevCart.find(cartItem => cartItem.id === item.id);
+            if (existingItem) {
+              return prevCart.map(cartItem =>
+                cartItem.id === item.id ? { ...cartItem, qty: cartItem.qty + 1 } : cartItem
+              );
+            }
+            return [...prevCart, { ...item, qty: 1 }];
+          });
+        };
+      
+        const handleQuantityChange = (id, delta) => {
+          setCart(prevCart =>
+            prevCart.map(item => 
+              item.id === id && item.qty + delta > 0
+                ? { ...item, qty: item.qty + delta }
+                : item
+            )
+          );
+        };
+      
+        const removeFromCart = (id) => {
+          setCart(prevCart => prevCart.filter(item => item.id !== id));
+        };
+      
+        const totalPrice = cart.reduce((total, item) => total + item.qty * item.price, 0);
+      
+        const handlePaymentChange = (e) => {
+          setPaymentMethod(e.target.value);
+        };
+      
+        useEffect(() => {
+          if (paymentMethod === "cash") {
+            setChange(amountPaid - totalPrice);
+          } else {
+            setChange(0);
+          }
+        }, [amountPaid, totalPrice, paymentMethod]);
+      
+        const setTodayDate = () => {
+          setSelectedDate(new Date().toISOString().split("T")[0]);
+        };
+      
+        const handleFileChange = (e) => {
+          const file = e.target.files[0];
+          if (file) {
+            setTransferProof(URL.createObjectURL(file)); // Create a URL for the selected file
+          }
+        };
+      
+        const handleCheckout = () => {
+          if (cart.length === 0) {
+              alert("Keranjang kosong. Tambahkan pesanan terlebih dahulu.");
+              return;
+          }
+      
+          if (paymentMethod === "cash" && (amountPaid === null || amountPaid < totalPrice)) {
+              setErrorMessage("Uang tidak cukup!");
+              return;
+          }
+      
+          const order = {
+              customerName,
+              date: selectedDate,
+              paymentMethod,
+              items: cart.map(item => ({
+                  name: item.name,
+                  qty: item.qty,
+                  price: item.price,
+                  total: item.price * item.qty // Calculate total for each item
+              })),
+              totalPrice, // Grand total for the order
+              amountPaid, // Save the amount paid
+              change,     // Save the change
+              transferProof: paymentMethod === "digital" ? transferProof : null // Save transfer proof if payment is digital
+          };
+      
+          // Save the order to localStorage
+          const previousOrders = JSON.parse(localStorage.getItem("orders")) || [];
+          localStorage.setItem("orders", JSON.stringify([...previousOrders, order]));
+      
+          alert("Pesanan berhasil disimpan!");
+      
+          // Clear cart and reset form
+          setCart([]);
+          setCustomerName("");
+          setSelectedDate("");
+          setPaymentMethod("cash");
+          setAmountPaid(0);
+          setChange(0);
+          setErrorMessage("");
+          setTransferProof(null); // Reset transfer proof
+      };
+      
+        
+        
+      
+      return (
+        <div className="container mt-4">
+          <h1 className="text-center">Kantin 225</h1>   
+          
+          <div className="row mt-5">
+            <div className="col-md-6">
+              <h3>Menu</h3>
+              <input
+                type="text"
+                className="form-control mb-3"
+                placeholder="Cari Menu..."
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+              />
+      
+              <div className="filter-buttons mb-3 d-flex justify-content-around">
+                <button
+                  className={`filter-button ${filter === 'All' ? 'active' : ''}`}
+                  onClick={() => setFilter('All')}
+                >
+                  <img src="image/all.png" alt="All" className="filter-logo" />
+                  <span>All</span> {/* Teks ditambahkan di sini */}
+                </button>
+                <button
+                  className={`filter-button ${filter === 'Makanan' ? 'active' : ''}`}
+                  onClick={() => setFilter('Makanan')}
+                >
+                  <img src="image/makanan.png" alt="Makanan" className="filter-logo" />
+                  <span>Makanan</span> {/* Teks ditambahkan di sini */}
+                </button>
+                <button
+                  className={`filter-button ${filter === 'Topping' ? 'active' : ''}`}
+                  onClick={() => setFilter('Topping')}
+                >
+                  <img src="image/topping.png" alt="Topping" className="filter-logo" />
+                  <span>Topping</span> {/* Teks ditambahkan di sini */}
+                </button>
+                <button
+                  className={`filter-button ${filter === 'Minuman' ? 'active' : ''}`}
+                  onClick={() => setFilter('Minuman')}
+                >
+                  <img src="image/minuman.png" alt="Minuman" className="filter-logo" />
+                  <span>Minuman</span> {/* Teks ditambahkan di sini */}
+                </button>
+              </div>
+              
+              
+      
+              <div className="menu-items">
+                <div className="row">
+                  {filteredItems.map(item => (
+                    <div className="col-md-4 mb-3" key={item.id}> {/* Ubah dari col-md-3 ke col-md-4 */}
+                      <div className="card h-100" style={{ cursor: 'pointer' }} onClick={() => addToCart(item)}>
+                        <img
+                          src={item.img}
+                          alt={item.name}
+                          className="card-img-top"
+                
+                        />
+                        <div className="card-body text-center">
+                          <h5 className="card-title">{item.name}</h5>
+                          <p className="card-text">Rp. {item.price.toLocaleString()}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+                   
+              </div>
+      
+              <div className="col-md-6 order-summary">
+                <h3>Ringkasan Pesanan</h3>
+
+
+
+
+                <div className="cart-items">
+  <table className="table">
+    <thead>
+      <tr>
+        <th>Menu</th>
+        <th>Jumlah</th>
+        <th>Harga</th>
+        <th>Total</th>
+        <th>Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      {cart.map(item => (
+        <tr key={item.id}>
+          <td>{item.name}</td>
+          <td>
+            <div className="d-flex align-items-center">
+              <button
+                className="btn btn-sm btn-warning"
+                onClick={() => handleQuantityChange(item.id, 1)}
+              >
+                +
+              </button>
+              <span className="mx-2">{item.qty}</span>
+              <button
+                className="btn btn-sm btn-danger"
+                onClick={() => handleQuantityChange(item.id, -1)}
+              >
+                -
+              </button>
+            </div>
+          </td>
+          <td>Rp. {item.price.toLocaleString()}</td>
+          <td>Rp. {(item.price * item.qty).toLocaleString()}</td> {/* Display total per item */}
+          <td>
+            <button
+              className="remove-btn"
+              onClick={() => removeFromCart(item.id)}
+            >
+              Hapus
+            </button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+  <h4>Total Grand: Rp. {totalPrice.toLocaleString()}</h4> {/* Display grand total */}
+</div>
+
+      
+                <div className="checkout-section">
+                  <div className="mb-3">
+                    <label>Nama Pelanggan:</label>
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={customerName}
+                      onChange={e => setCustomerName(e.target.value)}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label>Tanggal:</label>
+                    <input
+                      type="date"
+                      className="form-control"
+                      value={selectedDate}
+                      onChange={e => setSelectedDate(e.target.value)}
+                      onFocus={setTodayDate}
+                    />
+                  </div>
+                  <div className="mb-3">
+                    <label>Metode Pembayaran:</label>
+                    <select
+                      className="form-select"
+                      value={paymentMethod}
+                      onChange={handlePaymentChange}
+                    >
+                      <option value="cash">Cash</option>
+                      <option value="digital">QRIS</option>
+                    </select>
+                  </div>
+                  {paymentMethod === "cash" && (
+                    <div className="mb-3">
+                      <label>Jumlah yang Dibayar:</label>
+                      <input
+                        type="number"
+                        className="form-control"
+                        value={amountPaid || ""}
+                        onChange={e => setAmountPaid(parseFloat(e.target.value) || 0)}
+                      />
+                      {errorMessage && <div className="text-danger">{errorMessage}</div>}
+                      <div>Kembalian: Rp. {change.toLocaleString()}</div>
+                    </div>
+                  )}
+                  {paymentMethod === "digital" && (
+                    <div className="mb-3">
+                      <label>Unggah Bukti Transfer:</label>
+                      <input
+                        type="file"
+                        className="form-control"
+                        accept="image/*"
+                        onChange={handleFileChange} // Update the handler to this new one
+                      />
+                      {transferProof && ( // Display the image if transferProof is not null
+                        <div className="mt-2">
+                          <h5>Bukti Transfer:</h5>
+                          <img src={transferProof} alt="Transfer Proof" style={{ width: "100%", maxWidth: "300px" }} />
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  <button className="btn btn-success" onClick={handleCheckout}>
+                    Simpan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      }
+
+    ReactDOM.render(<App />, document.getElementById("root"));
+  </script>
+
+<script>
+  const toggleBtn = document.getElementById("toggleBtn");
+  const sidebar = document.getElementById("sidebar");
+
+  toggleBtn.addEventListener("click", () => {
+      sidebar.classList.toggle("minimized");
+  });
+</script>
+</body>
+</html>

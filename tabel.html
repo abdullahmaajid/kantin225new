@@ -3,92 +3,376 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Order Summary</title>
+  <title>Data</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/react@17/umd/react.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/react-dom@17/umd/react-dom.production.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/babel-standalone@6/babel.min.js"></script>
+  <link rel="icon" href="image/K3MERAH.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Paaji+2:wght@400..800&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      background-color: #f8f8f8; /* Light gray */
+
+      font-family: "Ubuntu", sans-serif;
+      font-optical-sizing: auto;
+    }
+    /* Sidebar styles */
+    .sidebar {
+      background-color: #da0010;
+      height: 100vh;
+      width: 120px; /* Normal width */
+      padding: 20px;
+      position: fixed;
+      transition: transform 1s ease, width 1s ease; /* Smooth transition */
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* Center items horizontally */
+      top: 0; /* Align to top */
+      left: 0; /* Align to left */
+    }
+    
+    /* Minimized state for sidebar */
+    .sidebar.minimized {
+      transform: translateX(-100%); /* Move completely out of view to the left */
+    }
+    
+    /* Sidebar item styling */
+    .sidebar-item {
+      display: flex;
+      flex-direction: column; /* Stack icon and text vertically */
+      align-items: center; /* Center items */
+      padding: 10px 0; /* Space between items */
+      color: white; /* Set text color to white */
+      text-decoration: none; /* Remove underline */
+      transition: background 0.3s; /* Smooth background change */
+      width: 100%; /* Take full width for better centering */
+    }
+    
+    .sidebar-item:hover {
+      background-color: #da0010; /* Darker red on hover */
+    }
+    
+    .sidebar-icon {
+      max-width: 30px; /* Size for the icons */
+      margin-bottom: 5px; /* Space between icon and text */
+      filter: brightness(0) invert(1); /* Make icon white */
+    }
+    
+    /* Toggle button styling */
+    .toggle-btn {
+      background: none; /* Remove background */
+      border: none; /* Remove border */
+      outline: none; /* Remove outline */
+      padding: 0; /* Remove padding */
+      cursor: pointer; /* Make it a clickable button */
+      position: absolute; /* Position it to the right */
+      right: -30px; /* Position outside the sidebar */
+      top: 20px; /* Adjust vertical position */
+      transform: translateX(50%); /* Center the button */
+    }
+    
+    .toggle-icon {
+      max-width: 30px; /* Set the size of the image */
+    }
+    
+    /* Content styles */
+    .content {
+      padding: 1px;
+      transition: margin-left 0.3s ease; /* Smooth transition */
+    }
+    
+  
+    .table-responsive {
+      height: 725px;
+      overflow-x: auto; /* Membuat tabel dapat di-scroll secara horizontal */
+    }
+
+    /* Media queries for mobile */
+    @media (max-width: 768px) {
+      .sidebar {
+          width: 70px; /* Adjust sidebar width for mobile */
+          height: 2000px;
+      }
+    
+      .sidebar.minimized {
+          width: 0; /* No width when minimized for mobile */
+      }
+      #calculateRevenue {
+        width: 106px;
+      }
+    
+      #resetRevenue {
+        width: 106px;
+      }
+    
+      #reloadData {
+        width: 106px;
+      }
+      
+      /* Default logo size */
+      /* Default logo size */
+    .logo-container {
+      width: 200%; /* Makes the logo take full width of the container */
+
+    }
+    }
+    
+
+
+
+
+
+    .table-responsive {
+      border-radius: 10px;
+      margin: 20px 0; /* Margin for spacing around the table */
+  }
+  
+  .table {
+      width: 100%; /* Make the table full width */
+      border-collapse: collapse; /* Collapse borders for a cleaner look */
+  }
+  
+  .table th {
+      background-color: #da0010; /* Red background for the header */
+      color: #fff; /* White text color for the header */
+      padding: 10px; /* Padding for table header */
+      text-align: left; /* Align header text to the left */
+      border: 1px solid white; /* White border for headers */
+  }
+  
+  .table tbody {
+      background-color: #fff; /* White background for body */
+      
+  }
+  
+  .table tbody tr {
+      border: 1px solid #fafafa; /* White border for body rows */
+  }
+  
+  .table tbody tr:nth-child(even) {
+      background-color: #f9f9f9; /* Light gray for even rows for readability */
+  }
+  
+  .table tbody tr:hover {
+      background-color: #e9ecef; /* Change background on hover for better UX */
+  }
+  
+  .table td {
+      padding: 10px; /* Padding for table data */
+      border: 1px solid #f0f0f0; /* White border for data cells */
+  }
+  
+  .table td:last-child {
+      text-align: center; /* Center align for the action column */
+  }
+  
+  .order-summary-header-row th {
+      font-weight: bold; /* Bold font for header */
+      font-size: 1.1em; /* Slightly larger font for emphasis */
+  }
+  
+  .btn {
+    background-color: #da0010; /* Red background color */
+    color: #fff; /* White text color */
+    border: none; /* Remove default border */
+    padding: 10px 15px; /* Add padding for a better button size */
+    border-radius: 4px; /* Slightly rounded corners */
+    text-decoration: none; /* Remove underline for anchor buttons */
+    display: inline-block; /* Allow margin spacing */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions */
+}
+
+.btn:hover {
+    background-color: #a81012; /* Darker red on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+.btn:active {
+    transform: translateY(1px); /* Press effect */
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem; /* Spacing below buttons */
+}
+
+.ms-2 {
+    margin-left: 0.5rem; /* Left margin for spacing between buttons */
+}
+
+  /* Responsive Styles */
+  @media (max-width: 768px) {
+      .table-responsive {
+          overflow-x: auto; /* Allow horizontal scrolling on small screens */
+      }
+  
+      .table th, .table td {
+          padding: 8px; /* Reduced padding on smaller screens */
+      }
+      .table-responsive {
+        height: 600px;
+      }
+      .table {
+        font-size: 12px; /* Mengecilkan ukuran font di tabel */
+      }
+    
+      .table th, .table td {
+        padding: 8px; /* Mengurangi padding untuk sel agar tabel lebih kompak */
+      }
+    
+      /* Menambah ruang antar kolom di tabel agar lebih rapat di layar kecil */
+      .order-summary-header-row th {
+        white-space: nowrap; /* Menjaga kolom agar tidak memengaruhi ukuran tabel */
+      }
+    
+      /* Mengatur lebar tabel agar tidak terlalu lebar */
+      .table-bordered {
+        width: 100%;
+      }
+  }
+  /* Responsive Styles */
+  @media (min-width: 768px) and (max-width: 1024px) {
+    .table-responsive {
+        overflow-x: auto; /* Allow horizontal scrolling on small screens */
+    }
+
+    .table th, .table td {
+        padding: 8px; /* Reduced padding on smaller screens */
+    }
+    .table-responsive {
+      height: 950px;
+    }
+    .table {
+      font-size: 12px; /* Mengecilkan ukuran font di tabel */
+    }
+  
+    .table th, .table td {
+      padding: 8px; /* Mengurangi padding untuk sel agar tabel lebih kompak */
+    }
+  
+    /* Menambah ruang antar kolom di tabel agar lebih rapat di layar kecil */
+    .order-summary-header-row th {
+      white-space: nowrap; /* Menjaga kolom agar tidak memengaruhi ukuran tabel */
+    }
+  
+    /* Mengatur lebar tabel agar tidak terlalu lebar */
+    .table-bordered {
+      width: 100%;
+    }
+}
+  
+  </style>
 </head>
 <body>
-  <div class="container mt-4">
-    <h1 class="text-center">Order Summary</h1>
-    
-    <button class="btn btn-success mb-4" onclick="exportToExcel()">Export to Excel</button>
-<button class="btn btn-info mb-4 ms-2" onclick="copyAllOrders()">Copy All</button>
-<a href="https://docs.google.com/spreadsheets/d/1MVDDoHqo7JoBRxfuYb98dYggEl39aNdJSE0kafLP9RY/edit?usp=sharing" class="btn btn-primary mb-4 ms-2" target="_blank">BACKUP MANUAL SPREADSHEETS</a>
+  <div class="sidebar" id="sidebar">
+    <div class="logo-container text-center mb-4">
+        <img src="image/K3MBP.png" alt="Kantin Logo" class="img-fluid">
+    </div>
 
-<div class="mb-4">
-  <input type="text" id="searchInput" class="form-control" placeholder="Search orders by customer name or date">
+    <a href="dashboard.html" class="sidebar-item">
+        <img src="image/dash.png" alt="Dashboard" class="sidebar-icon">
+        <span></span>
+    </a>
+    <a href="index.html" class="sidebar-item">
+        <img src="image/order.png" alt="Order" class="sidebar-icon">
+        <span></span>
+    </a>
+    <a href="tabel.html" class="sidebar-item">
+        <img src="image/tabel.png" alt="Rekap Data" class="sidebar-icon">
+        <span></span>
+    </a>
+
+    <!-- Toggle Button for collapsing -->
+    <button class="toggle-btn" id="toggleBtn">
+        <img src="image/minimize.png" alt="Toggle Sidebar" class="toggle-icon">
+    </button>
 </div>
 
 
+<div class="container mt-4">
 
-    
-    <table class="table table-bordered">
-      <thead>
-        <tr>
-          <th>No</th>
-          <th>Customer Name</th>
-          <th>Date</th>
-          <th>Items</th>
-          <th>Total Price</th>
-          <th>Payment Method</th>
-          <th>Amount Paid</th>
-          <th>Change</th>
-          <th>Transfer Proof</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="orderTableBody">
-        <!-- Order rows will be inserted here dynamically -->
-      </tbody>
-    </table>
+  <h6 class="mb-4">&nbsp;</h6> <!-- Empty h1 for blank space --><!-- Add h1 here for a title above the buttons -->
+  <button class="btn btn-success mb-4" onclick="exportToExcel()">Export to Excel</button>
+  <button class="btn btn-info mb-4 ms-2" onclick="copyAllOrders()">Copy All</button>
+  <a href="https://docs.google.com/spreadsheets/d/1MVDDoHqo7JoBRxfuYb98dYggEl39aNdJSE0kafLP9RY/edit?usp=sharing" class="btn btn-primary mb-4 ms-2" target="_blank">BACKUP MANUAL SPREADSHEETS</a>
+
+  <div class="mb-4">
+      <input type="text" id="searchInput" class="form-control" placeholder="Search orders by customer name or date">
   </div>
 
-  <!-- Edit Order Modal -->
-  <div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+  <div class="table-responsive">
+      <table class="table table-bordered border-dark">
+          <thead>
+              <tr class="table border-dark order-summary-header-row">
+                  <th>No</th>
+                  <th>Customer Name</th>
+                  <th>Date</th>
+                  <th>Items</th>
+                  <th>Total Price</th>
+                  <th>Payment Method</th>
+                  <th>Amount Paid</th>
+                  <th>Change</th>
+                  <th>Transfer Proof</th>
+                  <th>Action</th>
+              </tr>
+          </thead>
+          <tbody id="orderTableBody">
+              <!-- Order rows will be inserted here dynamically -->
+          </tbody>
+      </table>
+  </div>
+</div>
+
+<!-- Edit Order Modal -->
+<div class="modal fade" id="editOrderModal" tabindex="-1" aria-labelledby="editOrderModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="editOrderModalLabel">Edit Order</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form id="editOrderForm">
-            <div class="mb-3">
-              <label for="customerName" class="form-label">Customer Name</label>
-              <input type="text" class="form-control" id="customerName" required>
-            </div>
-            <div class="mb-3">
-              <label for="orderDate" class="form-label">Date</label>
-              <input type="date" class="form-control" id="orderDate" required>
-            </div>
-            <div class="mb-3">
-              <label for="totalPrice" class="form-label">Total Price</label>
-              <input type="number" class="form-control" id="totalPrice" required>
-            </div>
-            <div class="mb-3">
-              <label for="paymentMethod" class="form-label">Payment Method</label>
-              <input type="text" class="form-control" id="paymentMethod" required>
-            </div>
-            <div class="mb-3">
-              <label for="amountPaid" class="form-label">Amount Paid</label>
-              <input type="number" class="form-control" id="amountPaid" required>
-            </div>
-            <div class="mb-3">
-              <label for="transferProof" class="form-label">Transfer Proof URL</label>
-              <input type="text" class="form-control" id="transferProof">
-            </div>
-            <hr>
-            <h5>Items</h5>
-            <div id="itemList"></div>
-            <button type="button" class="btn btn-primary" id="addItemButton">Add Item</button>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="saveChangesButton">Save changes</button>
-        </div>
+          <div class="modal-header">
+              <h5 class="modal-title" id="editOrderModalLabel">Edit Order</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+              <form id="editOrderForm">
+                  <div class="mb-3">
+                      <label for="customerName" class="form-label">Customer Name</label>
+                      <input type="text" class="form-control" id="customerName" required>
+                  </div>
+                  <div class="mb-3">
+                      <label for="orderDate" class="form-label">Date</label>
+                      <input type="date" class="form-control" id="orderDate" required>
+                  </div>
+                  <div class="mb-3">
+                      <label for="totalPrice" class="form-label">Total Price</label>
+                      <input type="number" class="form-control" id="totalPrice" required>
+                  </div>
+                  <div class="mb-3">
+                      <label for="paymentMethod" class="form-label">Payment Method</label>
+                      <input type="text" class="form-control" id="paymentMethod" required>
+                  </div>
+                  <div class="mb-3">
+                      <label for="amountPaid" class="form-label">Amount Paid</label>
+                      <input type="number" class="form-control" id="amountPaid" required>
+                  </div>
+                  <div class="mb-3">
+                      <label for="transferProof" class="form-label">Transfer Proof URL</label>
+                      <input type="text" class="form-control" id="transferProof">
+                  </div>
+                  <hr>
+                  <h5>Items</h5>
+                  <div id="itemList"></div>
+                  <button type="button" class="btn btn-primary" id="addItemButton">Add Item</button>
+              </form>
+          </div>
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              <button type="button" class="btn btn-primary" id="saveChangesButton">Save changes</button>
+          </div>
       </div>
-    </div>
   </div>
+</div>
 
   
 
@@ -100,6 +384,9 @@
 
 
   <script>
+    
+
+
     const orders = [
   {
     customerName: "John Doe",
@@ -206,6 +493,8 @@ if (!localStorage.getItem("orders")) {
                 <button class="btn btn-danger btn-sm" onclick="removeOrder(${index})">Remove</button>
                 <button class="btn btn-primary btn-sm mt-2" onclick="exportToPDF(${index})">Invoice</button>
                 <button class="btn btn-primary btn-sm mt-2" onclick="exportToPDF1(${index})">Download Struk</button>
+            
+
               </td>
             `;
             orderTableBody.appendChild(row);
@@ -324,6 +613,45 @@ const saveChanges = (index) => {
 
 
 
+// Function to copy all orders to clipboard in a structured format
+window.copyAllOrders = () => {
+  const orders = JSON.parse(localStorage.getItem("orders")) || [];
+  let copyText = "No\tCustomer Name\tDate\tItem Name\tQuantity\tPrice\tTotal Price\tPayment Method\tAmount Paid\tChange\tTransfer Proof\n";
+
+  // Loop through each order
+  orders.forEach((order, index) => {
+    const change = order.paymentMethod === 'cash' ? (order.amountPaid - order.totalPrice) : 'N/A';
+
+    // Loop through each item in the order
+    order.items.forEach(item => {
+      const itemTotalPrice = item.price * item.qty;
+
+      // Format each order row in tab-separated format
+      copyText += [
+        index + 1,                                 // Order number
+        order.customerName,                        // Customer Name
+        order.date,                                // Date
+        item.name,                                 // Item Name
+        item.qty,                                  // Quantity
+        `Rp ${item.price.toLocaleString()}`,       // Price per item
+        `Rp ${itemTotalPrice.toLocaleString()}`,   // Total price for the item
+        order.paymentMethod,                       // Payment Method
+        `Rp ${order.amountPaid.toLocaleString()}`, // Amount Paid
+        `Rp ${change.toLocaleString()}`,           // Change
+        order.transferProof || 'N/A'               // Transfer Proof
+      ].join("\t") + "\n";
+    });
+  });
+
+  // Copy the text to clipboard
+  navigator.clipboard.writeText(copyText).then(() => {
+    alert("Orders copied to clipboard.");  // Alert notification
+  }).catch(err => {
+    console.error("Could not copy orders: ", err);
+  });
+};
+
+
 
 
 
@@ -403,7 +731,7 @@ window.exportToPDF = (index) => {
   const order = orders[index];
 
   const logoImg = new Image();
-  logoImg.src = 'image/K1MERAH.png';
+  logoImg.src = 'image/K3MERAH.png';
 
   logoImg.onload = function() {
       const aspectRatio = logoImg.width / logoImg.height;
@@ -448,7 +776,7 @@ window.exportToPDF = (index) => {
 
       // Invoice To (di bawah tanggal) - Bold dan nama Regular
       doc.setFont("helvetica", "bold");
-      doc.text("Kepada:", 195, 40, null, null, "right");
+      doc.text("Customer:", 195, 40, null, null, "right");
       doc.setFont("helvetica", "normal");
       doc.text(order.customerName, 195, 50, null, null, "right");
 
@@ -475,7 +803,7 @@ window.exportToPDF = (index) => {
               halign: 'center'
           },
           headStyles: {
-              fillColor: [214, 51, 51],
+            fillColor: [218, 0, 16],
               textColor: [255, 255, 255],
               fontStyle: 'bold'
           },
@@ -562,7 +890,7 @@ window.exportToPDF1 = (index) => {
   const order = orders[index];
 
   const logoImg = new Image();
-  logoImg.src = 'image/K1MERAH.png';
+  logoImg.src = 'image/K3MERAH.png';
 
   logoImg.onload = function() {
     const aspectRatio = logoImg.width / logoImg.height;
@@ -605,7 +933,7 @@ window.exportToPDF1 = (index) => {
 
     // "To:" and customer name (Centered below the date)
     doc.setFont("helvetica", "bold");
-    doc.text("To:", 10, 65);
+    doc.text("Customer:", 10, 65);
     doc.setFont("helvetica", "normal");
     doc.text(order.customerName, 17, 65);
 
@@ -631,7 +959,7 @@ window.exportToPDF1 = (index) => {
         halign: 'left'
       },
       headStyles: {
-        fillColor: [214, 51, 51],
+        fillColor: [218, 0, 16],
         textColor: [255, 255, 255],
         fontStyle: 'bold'
       },
@@ -729,6 +1057,16 @@ searchInput.addEventListener('input', () => {
     });
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+
+
+  <script>
+    const toggleBtn = document.getElementById("toggleBtn");
+    const sidebar = document.getElementById("sidebar");
+
+    toggleBtn.addEventListener("click", () => {
+        sidebar.classList.toggle("minimized");
+    });
+</script>
 
 </body>
 </html>
