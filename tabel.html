@@ -233,6 +233,22 @@
       .table-bordered {
         width: 100%;
       }
+      .button-container {
+        display: flex;
+        flex-direction: column; /* Stack buttons vertically */
+        align-items: center; /* Center align buttons */
+    }
+    
+    .btn {
+        width: 100%; /* Full width for buttons */
+        font-size: 16px; /* Slightly larger font for better readability */
+        padding: 10px; /* More padding for easier tapping */
+    }
+    
+    input#searchInput {
+        width: 100%; /* Ensure search input is full width */
+        margin-top: 10px; /* Add space above the search input */
+    }
   }
   /* Responsive Styles */
   @media (min-width: 768px) and (max-width: 1024px) {
@@ -295,14 +311,20 @@
 
 <div class="container mt-4">
 
-  <h6 class="mb-4">&nbsp;</h6> <!-- Empty h1 for blank space --><!-- Add h1 here for a title above the buttons -->
-  <button class="btn btn-success mb-4" onclick="exportToExcel()">Export to Excel</button>
-  <button class="btn btn-info mb-4 ms-2" onclick="copyAllOrders()">Copy All</button>
-  <a href="https://docs.google.com/spreadsheets/d/1MVDDoHqo7JoBRxfuYb98dYggEl39aNdJSE0kafLP9RY/edit?usp=sharing" class="btn btn-primary mb-4 ms-2" target="_blank">BACKUP MANUAL SPREADSHEETS</a>
+  <h6 class="mb-4">&nbsp;</h6> <!-- Empty h1 for blank space -->
 
-  <div class="mb-4">
-      <input type="text" id="searchInput" class="form-control" placeholder="Search orders by customer name or date">
-  </div>
+
+
+<div class="mb-4">
+    <button class="btn btn-success mb-2 ms-2" onclick="exportToExcel()">Export to Excel</button>
+    <button class="btn btn-info mb-2 ms-2" onclick="copyAllOrders()">Copy All</button>
+    <a href="https://docs.google.com/spreadsheets/d/1MVDDoHqo7JoBRxfuYb98dYggEl39aNdJSE0kafLP9RY/edit?usp=sharing" class="btn btn-primary mb-2 ms-2" target="_blank">Backup Manual Spreadsheets</a>
+</div>
+
+<div class="mb-4">
+    <input type="text" id="searchInput" class="form-control" placeholder="Search orders by customer name or date">
+</div>
+
 
   <div class="table-responsive">
       <table class="table table-bordered border-dark">
@@ -669,7 +691,7 @@ window.exportToExcel = () => {
   const worksheetData = [];
 
   // Add main header for orders
-  worksheetData.push(["No", "Customer Name", "Date", "Item Name", "Quantity", "Price", "Total Price", "Payment Method", "Amount Paid", "Change", "Transfer Proof"]);
+  worksheetData.push(["No", "Nama Customer", "Tanggal", "Nama Item", "Quantity", "Harga", "Total Harga", "Metode Pembayaran", "Jumlah Dibayar", "Kembalian", "Bukti Transfer"]);
 
   // Loop through each order
   orders.forEach((order, index) => {
