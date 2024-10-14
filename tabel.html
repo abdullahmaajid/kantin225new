@@ -684,8 +684,7 @@ window.copyAllOrders = () => {
       
 
       
-
-      // Function to export all orders to Excel
+// Function to export all orders to Excel
 window.exportToExcel = () => {
   const orders = JSON.parse(localStorage.getItem("orders")) || [];
   const worksheetData = [];
@@ -725,9 +724,17 @@ window.exportToExcel = () => {
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Orders");
 
-  // Write the workbook to a file
-  XLSX.writeFile(workbook, "orders_summary.xlsx");
+  // Format the current date
+  const today = new Date();
+  const day = String(today.getDate()).padStart(2, '0');
+  const month = String(today.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+  const year = today.getFullYear();
+  const formattedDate = `${day}-${month}-${year}`; // Change format as needed
+
+  // Write the workbook to a file with formatted date
+  XLSX.writeFile(workbook, `Data ${day} ${month} ${year}.xlsx`);
 };
+
 
 
 
@@ -851,30 +858,30 @@ window.exportToPDF = (index) => {
       const gap = 8; // Jarak antar elemen
     
 
-    doc.setFont("helvetica", "bold");
-    doc.text("Subtotal", 15, startY + 5, null, null, "left");
-    doc.setFont("helvetica", "normal");
-    doc.text(grandTotal, 170, startY + 5, null, null, "left");
+      doc.setFont("helvetica", "bold");
+      doc.text("Subtotal", 15, startY + 5, null, null, "left");
+      doc.setFont("helvetica", "normal");
+      doc.text(grandTotal, 170, startY + 5, null, null, "left");
 
-    doc.setFont("helvetica", "bold");
-    doc.text("Total Tagihan", 15, startY + 10, null, null, "left");
-    doc.setFont("helvetica", "normal");
-    doc.text(grandTotal, 170, startY + 10, null, null, "left");
+      doc.setFont("helvetica", "bold");
+      doc.text("Total Tagihan", 15, startY + 10, null, null, "left");
+      doc.setFont("helvetica", "normal");
+      doc.text(grandTotal, 170, startY + 10, null, null, "left");
 
-    doc.setFont("helvetica", "bold");
-    doc.text("Jumlah Dibayar", 15, startY + 15, null, null, "left");
-    doc.setFont("helvetica", "normal");
-    doc.text(amountPaid, 170, startY + 15, null, null, "left");
+      doc.setFont("helvetica", "bold");
+      doc.text("Jumlah Dibayar", 15, startY + 15, null, null, "left");
+      doc.setFont("helvetica", "normal");
+      doc.text(amountPaid, 170, startY + 15, null, null, "left");
 
-    doc.setFont("helvetica", "bold");
-    doc.text("Kembalian", 15,startY + 20, null, null, "left");
-    doc.setFont("helvetica", "normal");
-    doc.text(change, 170, startY + 20, null, null, "left");
+      doc.setFont("helvetica", "bold");
+      doc.text("Kembalian", 15,startY + 20, null, null, "left");
+      doc.setFont("helvetica", "normal");
+      doc.text(change, 170, startY + 20, null, null, "left");
 
-    doc.setFont("helvetica", "bold");
-    doc.text("Metode Pembayaran", 15, startY + 25, null, null, "left");
-    doc.setFont("helvetica", "normal");
-    doc.text(order.paymentMethod, 170, startY + 25, null, null, "left");
+      doc.setFont("helvetica", "bold");
+      doc.text("Metode Pembayaran", 15, startY + 25, null, null, "left");
+      doc.setFont("helvetica", "normal");
+      doc.text(order.paymentMethod, 170, startY + 25, null, null, "left");
 
       // Add another horizontal line before the thank you message
       doc.setDrawColor(150); 
@@ -884,8 +891,12 @@ window.exportToPDF = (index) => {
       doc.setFont("helvetica", "bold");
       doc.text("Terima kasih atas kunjungan Anda!", 105, startY + 70, null, null, "center");
 
-      // Save the PDF with a specific filename
-      doc.save(`invoice_${index + 1}.pdf`);
+      // Save the PDF with a specific filename format
+      const customerName = order.customerName.replace(/\s+/g, '_'); // Replace spaces with underscores for the filename
+      const date = new Date(order.date);
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      const formattedDate = date.toLocaleDateString('id-ID', options); // Format date to Indonesia locale
+      doc.save(`Invoice ${customerName} ${formattedDate}.pdf`);
   };
 
   // Handle any potential loading errors
@@ -899,12 +910,13 @@ window.exportToPDF = (index) => {
 
 
 
+
 window.exportToPDF1 = (index) => {
   const { jsPDF } = window.jspdf;
   const doc = new jsPDF({
     orientation: "portrait",
     unit: "mm",
-    format: [80, 200], // Set to receipt paper size (width 80mm and variable height)
+    format: [80, 200], // Mengatur ukuran kertas struk (lebar 80mm dan tinggi variabel)
     putOnlyUsedFonts: true,
     floatPrecision: 16
   });
@@ -917,55 +929,55 @@ window.exportToPDF1 = (index) => {
 
   logoImg.onload = function() {
     const aspectRatio = logoImg.width / logoImg.height;
-    const maxWidth = 30; // Max width for the logo
-    const maxHeight = 15; // Max height for the logo
+    const maxWidth = 30; // Lebar maksimum untuk logo
+    const maxHeight = 15; // Tinggi maksimum untuk logo
     let imgWidth = maxWidth;
     let imgHeight = maxWidth / aspectRatio;
 
+    // Mengatur ukuran logo jika melebihi batas tinggi
     if (imgHeight > maxHeight) {
       imgHeight = maxHeight;
       imgWidth = maxHeight * aspectRatio;
     }
 
-    // Center the logo at the top
+    // Menambahkan logo di tengah atas
     const pageWidth = doc.internal.pageSize.getWidth();
     const centerX = (pageWidth - imgWidth) / 2;
     doc.addImage(logoImg, "PNG", centerX, 10, imgWidth, imgHeight);
 
-    // "Kantin 225" text (Centered under the logo)
+    // Menambahkan teks "Kantin 225" di bawah logo
     doc.setFontSize(12);
     doc.setFont("helvetica", "bold");
     doc.text("Kantin 225", pageWidth / 2, 30, null, null, "center");
 
-    // Address (Centered under 'Kantin 225')
+    // Menambahkan alamat di bawah nama
     doc.setFontSize(8);
     doc.setFont("helvetica", "normal");
     doc.text("Jl. Tegal Arum No.225,", pageWidth / 2, 35, null, null, "center");
     doc.text("Gamping Kidul, Ambarketawang,", pageWidth / 2, 40, null, null, "center");
     doc.text("Sleman, Yogyakarta 55291", pageWidth / 2, 45, null, null, "center");
 
-    // "INVOICE" text (Centered below the address)
+    // Menambahkan teks "INVOICE" di bawah alamat
     doc.setFontSize(12);
     doc.setFont("helvetica", "bold");
     doc.text("INVOICE", pageWidth / 2, 55, null, null, "center");
-xf
-    // Date (Below "INVOICE")
+
+    // Menambahkan tanggal di bawah "INVOICE"
     doc.setFontSize(8);
     doc.setFont("helvetica", "normal");
-    doc.text(`Tanggal: ${formatDate(order.date)}`, pageWidth / 2, 60, null, null, "center");
+    const orderDate = formatDate(order.date);
+    doc.text(`Tanggal: ${orderDate}`, pageWidth / 2, 60, null, null, "center");
 
-    // "To:" and customer name (Centered below the date)
+    // Menambahkan "Customer:" dan nama pelanggan
     doc.setFont("helvetica", "bold");
     doc.text("Customer:", 10, 65);
     doc.setFont("helvetica", "normal");
-    // Assuming 'doc' is your jsPDF instance
-doc.text(order.customerName, 25, 65, { align: "left" });
+    doc.text(order.customerName, 25, 65);
 
-
-    // Add a horizontal line before the table
+    // Menambahkan garis horizontal sebelum tabel
     doc.line(10, 70, pageWidth - 10, 70);
 
-    // Adjust table settings (Improved composition)
+    // Mengatur data untuk tabel
     const itemTableData = order.items.map(item => [
       item.name,
       item.qty,
@@ -973,14 +985,15 @@ doc.text(order.customerName, 25, 65, { align: "left" });
       `Rp ${(item.price * item.qty).toLocaleString()}`
     ]);
 
+    // Menggunakan autoTable untuk menambahkan tabel
     doc.autoTable({
       head: [['Nama', 'Jumlah', 'Harga', 'Total Harga']],
       body: itemTableData,
       startY: 75,
-      theme: 'plain', // No borders for cleaner look
+      theme: 'plain', // Tidak ada batas untuk tampilan yang lebih bersih
       styles: {
-        fontSize: 6.5, // Smaller font size for more compact table
-        cellPadding: 1, // Further reduced padding for more space
+        fontSize: 6.5, // Ukuran font yang lebih kecil untuk tabel yang lebih padat
+        cellPadding: 1, // Padding sel yang lebih kecil untuk menghemat ruang
         halign: 'left'
       },
       headStyles: {
@@ -989,22 +1002,21 @@ doc.text(order.customerName, 25, 65, { align: "left" });
         fontStyle: 'bold'
       },
       columnStyles: {
-        0: { cellWidth: 20, halign: 'left'  }, // Item name - smaller width
-        1: { cellWidth: 10, halign: 'center' }, // Quantity - smaller width
-        2: { cellWidth: 15, halign: 'left' }, // Price - smaller width
-        3: { cellWidth: 15, halign: 'left' }, // Total - smaller width
+        0: { cellWidth: 20, halign: 'left' }, // Lebar sel nama item
+        1: { cellWidth: 10, halign: 'center' }, // Lebar sel jumlah
+        2: { cellWidth: 15, halign: 'left' }, // Lebar sel harga
+        3: { cellWidth: 15, halign: 'left' }, // Lebar sel total
       },
-      margin: { left: 10, right: 10 }, // Reduce left and right margin further
+      margin: { left: 10, right: 10 }, // Mengurangi margin kiri dan kanan
     });
 
-    // Calculate totals
+    // Menghitung total
     const grandTotal = `Rp ${order.totalPrice.toLocaleString()}`;
     const amountPaid = `Rp ${order.amountPaid.toLocaleString()}`;
     const change = `Rp ${order.change.toLocaleString()}`;
 
-    // Totals and payment details below the table
+    // Menambahkan rincian total di bawah tabel
     const startY = doc.lastAutoTable.finalY + 5;
-    
 
     doc.setFont("helvetica", "bold");
     doc.text("Subtotal", 10, startY + 5, null, null, "left");
@@ -1022,7 +1034,7 @@ doc.text(order.customerName, 25, 65, { align: "left" });
     doc.text(amountPaid, 53, startY + 15, null, null, "left");
 
     doc.setFont("helvetica", "bold");
-    doc.text("Kembalian", 10,startY + 20, null, null, "left");
+    doc.text("Kembalian", 10, startY + 20, null, null, "left");
     doc.setFont("helvetica", "normal");
     doc.text(change, 53, startY + 20, null, null, "left");
 
@@ -1031,22 +1043,31 @@ doc.text(order.customerName, 25, 65, { align: "left" });
     doc.setFont("helvetica", "normal");
     doc.text(order.paymentMethod, 53, startY + 25, null, null, "left");
 
-    // Final line before thank you message
-    doc.line(10, startY + 30, pageWidth - 10, startY + 30);
+    // Menambahkan garis horizontal sebelum pesan terima kasih
+    doc.setDrawColor(150);
+    doc.line(10, startY + 60, pageWidth - 10, startY + 60);
 
-    // Thank you message at the bottom (Centered)
+    // Menambahkan pesan terima kasih di bagian bawah
     doc.setFont("helvetica", "bold");
-    doc.text("Terima kasih atas kunjungan Anda!", pageWidth / 2, startY + 35, null, null, "center");
+    doc.text("Terima kasih atas kunjungan Anda!", pageWidth / 2, startY + 70, null, null, "center");
 
-    // Save the PDF with a specific filename
-    doc.save(`invoice_${index + 1}.pdf`);
+    // Membuat nama file berdasarkan nama customer dan tanggal
+    const formattedDate = new Date(order.date);
+    const dayOfWeek = formattedDate.toLocaleString('id-ID', { weekday: 'long' }); // Mendapatkan hari dalam bahasa Indonesia
+    const dateString = formattedDate.toLocaleString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }); // Format tanggal
+    const fileName = `Struk ${order.customerName} ${dayOfWeek} ${dateString}.pdf`; // Format nama file
+
+    // Menyimpan PDF dengan nama file yang telah ditentukan
+    doc.save(fileName);
   };
 
-  // Handle any errors loading the image
+  // Menangani kesalahan pemuatan gambar
   logoImg.onerror = function() {
     console.error('Error loading image');
   };
 };
+
+
 
 
 

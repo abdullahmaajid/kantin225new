@@ -142,6 +142,7 @@
     }
     
     .card-title {
+      
       font-size: 1.2em; /* Set a font size for the item name */
       text-align: center; /* Center align the title */
     }
@@ -484,6 +485,8 @@ div.kembalian {
   margin-bottom: 20px; /* Optional: Add top margin for spacing */
 }
 
+
+
 /* Media queries for mobile */
 @media (max-width: 768px) {
 
@@ -642,8 +645,8 @@ h3 {
   { id: 8, category: "Makanan", name: "Bakmie Rebus", price: 12000, img: "image/bakmierebus1.png",              description: "Mie rebus dengan kuah dan sayuran." },
   { id: 9, category: "Makanan", name: "Indomie Goreng", price: 5000, img: "image/indomiegoreng1.png",           description: "Mie instan goreng yang cepat saji." },
   { id: 10, category: "Makanan", name: "Indomie Rebus", price: 5000, img: "image/indomierebus1.png",            description: "Mie instan rebus yang praktis." },
-        { id: 11, category: "Makanan", name: "Gado-Gado", price: 13000, img: "image/gadogado1.png",             description: "Salad sayuran dengan saus kacang." },
-        { id: 12, category: "Makanan", name: "Nasi Putih", price: 3000, img: "image/nasiputih1.png",            description: "Nasi putih yang pulen dan lembut." },
+  { id: 11, category: "Makanan", name: "Gado-Gado", price: 13000, img: "image/gadogado1.png",             description: "Salad sayuran dengan saus kacang." },
+  { id: 12, category: "Makanan", name: "Nasi Putih", price: 3000, img: "image/nasiputih1.png",            description: "Nasi putih yang pulen dan lembut." },
   { id: 13, category: "Makanan", name: "Magelangan", price: 12000, img: "image/magelangan1.png",                description: "Nasi goreng campur telur dan sayuran." },
   { id: 14, category: "Topping", name: "Telur Dadar", price: 3000, img: "image/telurdadar1.png",                description: "Telur dadar goreng yang lembut." },
   { id: 15, category: "Topping", name: "Telur Ceplok", price: 3000, img: "image/telurceplok1.png",              description: "Telur ceplok yang sempurna." },
@@ -813,7 +816,7 @@ h3 {
                   className={`filter-button ${filter === 'All' ? 'active' : ''}`}
                   onClick={() => setFilter('All')}
                 >
-                  <img src="image/all.png" alt="All" className="filter-logo" />
+                  <img src="image/all3.png" alt="All" className="filter-logo" />
                   <span>All</span> {/* Teks ditambahkan di sini */}
                 </button>
                 <button
@@ -982,6 +985,8 @@ h3 {
                   </div>
                   
                   {paymentMethod === "cash" && (
+
+
                     <div className="row mb-3">
                       {/* Jumlah yang Dibayar */}
                       <div className="col-md-6">
