@@ -1,0 +1,133 @@
+const handleCheckout = () => {
+  if (cart.length === 0) {
+    alert("Keranjang kosong. Tambahkan pesanan terlebih dahulu.");
+    return;
+  }
+  
+  if (!customerName || !selectedDate) {
+    alert("Nama pelanggan dan tanggal wajib diisi.");
+    return;
+  }
+
+  if (paymentMethod === "cash" && (amountPaid === null || amountPaid < totalPrice)) {
+    setErrorMessage("Uang tidak cukup!");
+    return;
+  }
+
+  const order = {
+    customerName,
+    date: selectedDate,
+    paymentMethod,
+    items: cart.map(item => ({
+      name: item.name,
+      qty: item.qty,
+      price: item.price,
+      total: item.price * item.qty
+    })),
+    totalPrice,
+    amountPaid,
+    change,
+    transferProof: paymentMethod === "digital" ? transferProof : null
+  };
+
+  // Send the order to PHP backend
+  fetch('save_order.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(order)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      alert("Pesanan berhasil disimpan!");
+      // Clear cart and reset form
+      setCart([]);
+      setCustomerName("");
+      setSelectedDate("");
+      setPaymentMethod("cash");
+      setAmountPaid(0);
+      setChange(0);
+      setErrorMessage("");
+      setTransferProof(null);
+    } else {
+      alert("Terjadi kesalahan saat menyimpan pesanan.");
+    }
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+};
+
+
+
+
+
+
+
+
+
+<?php
+// Connection settings
+$host = 'localhost';
+$dbname = 'kantin225';
+$username = 'root'; // or your database username
+$password = '';     // or your database password
+
+// Establishing connection to the database
+$conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
+
+// Getting the data from the POST request
+$data = json_decode(file_get_contents('php://input'), true);
+
+$customerName = $data['customerName'];
+$date = $data['date'];
+$paymentMethod = $data['paymentMethod'];
+$totalPrice = $data['totalPrice'];
+$amountPaid = $data['amountPaid'];
+$changeDue = $data['change'];
+$transferProof = isset($data['transferProof']) ? $data['transferProof'] : null;
+
+// Start transaction
+$conn->beginTransaction();
+
+try {
+    // Insert the order into the `orders` table
+    $stmt = $conn->prepare("INSERT INTO orders (customer_name, date, payment_method, total_price, amount_paid, change_due, transfer_proof) 
+                            VALUES (:customer_name, :date, :payment_method, :total_price, :amount_paid, :change_due, :transfer_proof)");
+    $stmt->execute([
+        'customer_name' => $customerName,
+        'date' => $date,
+        'payment_method' => $paymentMethod,
+        'total_price' => $totalPrice,
+        'amount_paid' => $amountPaid,
+        'change_due' => $changeDue,
+        'transfer_proof' => $transferProof
+    ]);
+
+    // Get the last inserted order ID
+    $orderId = $conn->lastInsertId();
+
+    // Insert each item into the `order_items` table
+    foreach ($data['items'] as $item) {
+        $stmt = $conn->prepare("INSERT INTO order_items (order_id, item_name, quantity, price, total) 
+                                VALUES (:order_id, :item_name, :quantity, :price, :total)");
+        $stmt->execute([
+            'order_id' => $orderId,
+            'item_name' => $item['name'],
+            'quantity' => $item['qty'],
+            'price' => $item['price'],
+            'total' => $item['total']
+        ]);
+    }
+
+    // Commit the transaction
+    $conn->commit();
+
+    echo json_encode(['success' => true]);
+} catch (Exception $e) {
+    // Rollback the transaction if something goes wrong
+    $conn->rollBack();
+    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+}

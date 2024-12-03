@@ -398,15 +398,18 @@ label {
 
 /* Input and select styling */
 .form-control, .form-select {
+
   margin-bottom: 0.2rem;
   background-color: transparent;
-  border: 2px solid #fafafa;
+  border: 2px solid #f9f9f9;
   color: black;
-  background-color: white;
+  background-color: rgb(250, 250, 250);
   padding: 10px;
   border-radius: 15px;
   transition: all 0.3s ease;
 }
+
+
 
 .form-control:focus, .form-select:focus {
   border-color: #fafafa;
@@ -426,7 +429,7 @@ input[type="file"] {
   background-color: white;
   color: #ffffff;
   padding: 10px;
-  border: 2px solid fafafa;
+  border: 2px solid #fafafa;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -742,54 +745,89 @@ h3 {
           }
         };
       
+
+
+
+
+
+
+
         const handleCheckout = () => {
-          if (cart.length === 0) {
-              alert("Keranjang kosong. Tambahkan pesanan terlebih dahulu.");
-              return;
-          }
-          // Check if customer name and date are filled
-    if (!customerName || !selectedDate) {
-        alert("Nama pelanggan dan tanggal wajib diisi.");
-        return;
+  if (cart.length === 0) {
+    alert("Keranjang kosong. Tambahkan pesanan terlebih dahulu.");
+    return;
+  }
+
+  if (!customerName || !selectedDate) {
+    alert("Nama pelanggan dan tanggal wajib diisi.");
+    return;
+  }
+
+  if (paymentMethod === "cash" && (amountPaid === null || amountPaid < totalPrice)) {
+    setErrorMessage("Uang tidak cukup!");
+    return;
+  }
+
+  const order = {
+    customerName,
+    date: selectedDate,
+    paymentMethod,
+    items: cart.map(item => ({
+      name: item.name,
+      qty: item.qty,
+      price: item.price,
+      total: item.price * item.qty
+    })),
+    totalPrice,
+    amountPaid,
+    change,
+    transferProof: paymentMethod === "digital" ? transferProof : null // transferProof harus berupa file
+  };
+
+  // Jika transferProof ada, ubah menjadi data URL
+  if (paymentMethod === "digital" && transferProof) {
+    const reader = new FileReader();
+    reader.onload = function(event) {
+      order.transferProof = event.target.result; // Data URL
+      sendOrder(order); // Kirim pesanan setelah mendapatkan transferProof
+    };
+    reader.readAsDataURL(transferProof); // Membaca file sebagai Data URL
+  } else {
+    sendOrder(order); // Kirim pesanan jika tidak ada transferProof
+  }
+};
+
+const sendOrder = (order) => {
+  fetch('save_order.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(order)
+  })
+  .then(response => response.json())
+  .then(data => {
+    if (data.success) {
+      alert("Pesanan berhasil disimpan!");
+      // Clear cart and reset form
+      setCart([]);
+      setCustomerName("");
+      setSelectedDate("");
+      setPaymentMethod("cash");
+      setAmountPaid(0);
+      setChange(0);
+      setErrorMessage("");
+      setTransferProof(null);
+    } else {
+      alert("Terjadi kesalahan saat menyimpan pesanan.");
     }
-      
-          if (paymentMethod === "cash" && (amountPaid === null || amountPaid < totalPrice)) {
-              setErrorMessage("Uang tidak cukup!");
-              return;
-          }
-      
-          const order = {
-              customerName,
-              date: selectedDate,
-              paymentMethod,
-              items: cart.map(item => ({
-                  name: item.name,
-                  qty: item.qty,
-                  price: item.price,
-                  total: item.price * item.qty // Calculate total for each item
-              })),
-              totalPrice, // Grand total for the order
-              amountPaid, // Save the amount paid
-              change,     // Save the change
-              transferProof: paymentMethod === "digital" ? transferProof : null // Save transfer proof if payment is digital
-          };
-      
-          // Save the order to localStorage
-          const previousOrders = JSON.parse(localStorage.getItem("orders")) || [];
-          localStorage.setItem("orders", JSON.stringify([...previousOrders, order]));
-      
-          alert("Pesanan berhasil disimpan!");
-      
-          // Clear cart and reset form
-          setCart([]);
-          setCustomerName("");
-          setSelectedDate("");
-          setPaymentMethod("cash");
-          setAmountPaid(0);
-          setChange(0);
-          setErrorMessage("");
-          setTransferProof(null); // Reset transfer proof
-      };
+  })
+  .catch(error => {
+    console.error('Error:', error);
+  });
+};
+
+
       
         
         

@@ -1,0 +1,17 @@
+{
+    "name": "abdullahmaajid/k225",
+    "autoload": {
+        "psr-4": {
+            "Abdullahmaajid\\K225\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "abdullahmaajid",
+            "email": "abdullah.maajid.ft22@mail.umy.ac.id"
+        }
+    ],
+    "require": {
+        "tecnickcom/tcpdf": "^6.7"
+    }
+}
