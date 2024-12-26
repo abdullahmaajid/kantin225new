@@ -288,14 +288,14 @@ $topMenuResult = $conn->query($topMenuQuery);
     <li>
       <a href="rekap.php">
         <img src="./image/logo/rekap.png" alt="Rekap Icon" class="sidebar-icon">
-        Rekap
+        Report
       </a>
     </li>
 
     <li>
       <a href="print.php">
         <img src="./image/logo/print.png" alt="Logout Icon" class="sidebar-icon">
-        Print Struk
+        Print
       </a>
     </li>
 
@@ -357,11 +357,11 @@ $topMenuResult = $conn->query($topMenuQuery);
 <form method="GET" class="mb-6 flex flex-col items-center justify-center bg-white shadow-md rounded-lg p-6 space-y-4">
     <div class="flex flex-row w-full space-x-4 items-center">
         <div class="flex flex-col w-1/2">
-            <label for="start_date" class="text-lg font-semibold text-gray-700">Mulai Tanggal:</label>
+            <label for="start_date" class="text-lg font-semibold text-gray-700">Starting from:</label>
             <input type="date" id="start_date" name="start_date" value="<?php echo isset($startDate) ? $startDate : ''; ?>" class="border border-gray-300 rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-600 transition duration-200 w-full" onchange="this.form.submit()">
         </div>
         <div class="flex flex-col w-1/2">
-            <label for="end_date" class="text-lg font-semibold text-gray-700">Sampai Tanggal:</label>
+            <label for="end_date" class="text-lg font-semibold text-gray-700">Ending on:</label>
             <input type="date" id="end_date" name="end_date" value="<?php echo isset($endDate) ? $endDate : ''; ?>" class="border border-gray-300 rounded-lg px-2 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-red-600 transition duration-200 w-full" onchange="this.form.submit()">
         </div>
     </div>
@@ -418,9 +418,9 @@ $topMenuResult = $conn->query($topMenuQuery);
                     <div class="icon-container">
                         <img src="./image/logo/pendapatan.png" alt="Total Pendapatan Icon" class="w-12 h-12 p-1">
                     </div>
-                    <div class="text-center">
-                        <h2 class="text-xl font-semibold mb-1" style="color: var(--merah1);">Total Pendapatan</h2>
-                        <p class="text-2xl font-bold">Rp <?php echo number_format($totalRevenue, 2, ',', '.'); ?></p>
+                    <div class="text">
+                        <h2 class="text-left text-xl font-semibold mb-1" style="color: var(--merah1);">Total Revenue</h2>
+                        <p class="text-center text-2xl font-bold">Rp <?php echo number_format($totalRevenue, 2, ',', '.'); ?></p>
                     </div>
                 </div>
             </div>
@@ -432,7 +432,7 @@ $topMenuResult = $conn->query($topMenuQuery);
                         <img src="./image/logo/menu2.png" alt="Total Menu Icon" class="w-12 h-12 p-1">
                     </div>
                     <div class="text-center">
-                        <h2 class="text-xl font-semibold mb-1" style="color: var(--merah1);">Total Menu</h2>
+                        <h2 class="text-xl font-semibold mb-1" style="color: var(--merah1);">Total Items</h2>
                         <p class="text-2xl font-bold"><?php echo $totalUniqueMenu; ?> Items</p>
                     </div>
                 </div>
@@ -445,8 +445,8 @@ $topMenuResult = $conn->query($topMenuQuery);
                         <img src="./image/logo/pelanggan.png" alt="Total Pelanggan Icon" class="w-12 h-12 p-1">
                     </div>
                     <div class="text-center">
-                        <h2 class="text-xl font-semibold mb-1" style="color: var(--merah1);">Total Pelanggan</h2>
-                        <p class="text-2xl font-bold"><?php echo $totalCustomers; ?> Pelanggan</p>
+                        <h2 class="text-xl font-semibold mb-1" style="color: var(--merah1);">Total Customers</h2>
+                        <p class="text-2xl font-bold"><?php echo $totalCustomers; ?> Customers</p>
                     </div>
                 </div>
             </div>
@@ -458,7 +458,7 @@ $topMenuResult = $conn->query($topMenuQuery);
                         <img src="./image/logo/order2.png" alt="Total Order Icon" class="w-12 h-12 p-1">
                     </div>
                     <div class="text-center">
-                        <h2 class="text-xl font-semibold mb-1" style="color: var(--merah1);">Total Order</h2>
+                        <h2 class="text-xl font-semibold mb-1" style="color: var(--merah1);">Total Orders</h2>
                         <p class="text-2xl font-bold"><?php echo $totalOrders; ?> Order</p>
                     </div>
                 </div>
@@ -511,14 +511,14 @@ tr:hover td {
 
 <!-- Customer Payments -->
 <div class="w-full md:w-1/2 flex p-1">
-    <div class="bg-white shadow-lg rounded-lg p-4 flex-grow" style="height: 553px; overflow-y: auto;">
-        <h2 class="text-2xl font-semibold mb-4" style="color: #da0010;">Pembayaran Pelanggan</h2>
+    <div class="bg-white shadow-lg rounded-lg p-4 flex-grow" style="height: 513px; overflow-y: auto;">
+        <h2 class="text-2xl font-semibold mb-4" style="color: #da0010;">Customer Payment</h2>
         <table class="min-w-full border-collapse rounded-lg overflow-hidden">
             <thead>
                 <tr style="background-color: #da0010; color: white;">
-                    <th class="px-4 py-2">Nama Pelanggan</th>
-                    <th class="px-4 py-2">Total Pembayaran</th>
-                    <th class="px-4 py-2">Jumlah Pesanan</th> <!-- Kolom baru untuk jumlah pesanan -->
+                    <th class="px-4 py-2">Customer Name</th>
+                    <th class="px-4 py-2">Total Payment</th>
+                    <th class="px-4 py-2">Order Quantity</th> <!-- Kolom baru untuk jumlah pesanan -->
                 </tr>
             </thead>
             <tbody>
@@ -539,13 +539,13 @@ tr:hover td {
 
 <!-- Most Ordered Items -->
 <div class="w-full md:w-1/2 flex p-1">
-    <div class="bg-white shadow-lg rounded-lg p-4 flex-grow" style="height: 553px; overflow-y: auto;">
-        <h2 class="text-2xl font-semibold mb-4" style="color: #da0010;">Menu Terlaris</h2>
+    <div class="bg-white shadow-lg rounded-lg p-4 flex-grow" style="height: 513px; overflow-y: auto;">
+        <h2 class="text-2xl font-semibold mb-4" style="color: #da0010;">Best-Selling Menu</h2>
         <table class="min-w-full border-collapse rounded-lg overflow-hidden">
             <thead>
                 <tr style="background-color: #da0010; color: white;">
-                    <th class="px-4 py-2">Nama Menu</th>
-                    <th class="px-4 py-2">Total Dipesan</th>
+                    <th class="px-4 py-2">Menu Name</th>
+                    <th class="px-4 py-2">Total Ordered</th>
                 </tr>
             </thead>
             <tbody>
@@ -568,17 +568,17 @@ tr:hover td {
 <div class="chart-section">
 
 <div class="chart-container" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-    <h2 class="text-2xl font-semibold mb-4" style="color: #da0010;">Pendapatan Harian</h2>
+    <h2 class="text-2xl font-semibold mb-4" style="color: #da0010;">Daily Revenue</h2>
     <canvas id="dailyRevenueChart" class="mb-6" style="height: 400px;"></canvas>
 </div>
 
     <div class="chart-container mt-8" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-        <h2 class="text-2xl font-semibold mb-4" style="color: #da0010;">Pendapatan Bulanan</h2>
+        <h2 class="text-2xl font-semibold mb-4" style="color: #da0010;">Monthly Revenue</h2>
         <canvas id="monthlyRevenueChart" class="mb-6" style="height: 400px;"></canvas>
     </div>
 
     <div class="chart-container mt-8" style="background-color: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
-        <h2 class="text-2xl font-semibold mb-4" style="color: #da0010;">Pendapatan Tahunan</h2>
+        <h2 class="text-2xl font-semibold mb-4" style="color: #da0010;">Annual Revenue</h2>
         <canvas id="yearlyRevenueChart" class="mb-6" style="height: 400px;"></canvas>
     </div>
 </div>
@@ -592,7 +592,7 @@ tr:hover td {
         data: {
             labels: dailyRevenueData.map(item => item.date),
             datasets: [{
-                label: 'Pendapatan Harian',
+                label: 'Daily Revenue',
                 data: dailyRevenueData.map(item => item.revenue),
                 borderColor: '#da0010',
                 backgroundColor: '#da0010',
@@ -619,7 +619,7 @@ tr:hover td {
         data: {
             labels: monthlyRevenueData.map(item => item.month),
             datasets: [{
-                label: 'Pendapatan Bulanan',
+                label: 'Monthly Revenue',
                 data: monthlyRevenueData.map(item => item.revenue),
                 backgroundColor: '#da0010',
             }]
@@ -640,7 +640,7 @@ tr:hover td {
         data: {
             labels: yearlyRevenueData.map(item => item.year),
             datasets: [{
-                label: 'Pendapatan Tahunan',
+                label: 'Annual Revenue',
                 data: yearlyRevenueData.map(item => item.revenue),
                 backgroundColor: 
                     '#da0010',

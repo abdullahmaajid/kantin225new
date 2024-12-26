@@ -187,14 +187,14 @@ if (!isset($_SESSION['user_id'])) {
     <li>
       <a href="rekap.php">
         <img src="./image/logo/rekap.png" alt="Rekap Icon" class="sidebar-icon">
-        Rekap
+        Report
       </a>
     </li>
 
     <li>
       <a href="print.php">
         <img src="./image/logo/print.png" alt="Logout Icon" class="sidebar-icon">
-        Print Struk
+        Print
       </a>
     </li>
 

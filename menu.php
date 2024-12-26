@@ -132,14 +132,18 @@ $result = $conn->query("SELECT * FROM menu_items");
     <!-- SweetAlert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <style>
+    
         /* styles.css */
         .menu-table-container {
+            
+            width: 100%;
             height: 680px;          /* Set the height to 640px */
             overflow-y: auto;      /* Enable vertical scrolling */
             overflow-x: auto;    /* Hide horizontal overflow */
         }
 
         .menu-table {
+            
             min-width: 100%;       /* Ensure the table uses full width */
         }
 
@@ -158,7 +162,7 @@ $result = $conn->query("SELECT * FROM menu_items");
             color: white;               /* White text in header */
         }
         .add-menu-box, .update-menu-box {
-            height: 770px; /* Set height */
+            height: 756px; /* Set height */
             overflow-y: auto; /* Allow vertical scrolling if content exceeds the height */
         }
 
@@ -322,14 +326,14 @@ $result = $conn->query("SELECT * FROM menu_items");
     <li>
       <a href="rekap.php">
         <img src="./image/logo/rekap.png" alt="Rekap Icon" class="sidebar-icon">
-        Rekap
+        Report
       </a>
     </li>
 
     <li>
       <a href="print.php">
         <img src="./image/logo/print.png" alt="Logout Icon" class="sidebar-icon">
-        Print Struk
+        Print
       </a>
     </li>
 
@@ -397,7 +401,7 @@ $result = $conn->query("SELECT * FROM menu_items");
 
 
 
-    <div class="container mx-auto mt-8 p-4">
+    <div class="container mx-auto mt-8">
         <h1 class="text-3xl font-bold text-black text-center mb-6">Menu</h1>
 
         <div class="flex flex-col md:flex-row space-x-0 md:space-x-4">
@@ -424,11 +428,11 @@ $result = $conn->query("SELECT * FROM menu_items");
                                 <input type="file" name="img" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm" accept="image/*" required>
                             </div>
                             <div>
-                                <label class="text-xl block text-sm font-bold text-gray-700 mt-5" for="description">Description</label>
+                                <label class="text-xl block text-sm font-bold text-gray-700 mt-0" for="description">Description</label>
                                 <textarea name="description" class="form-textarea mt-1 block w-full border-gray-300 rounded-md shadow-sm" placeholder="Description" required></textarea>
                             </div>
                         </div>
-                        <button type="submit" name="add" class="btn-red mt-3 font-bold py-2 px-4 rounded hover:bg-red-500 transition">Add Menu Item</button>
+                        <button type="submit" name="add" class="btn-red mt-3 font-bold py-2 px-4 rounded hover:bg-red-500 transition">Add</button>
                     </form>
                 </div>
             </div>
@@ -457,11 +461,11 @@ $result = $conn->query("SELECT * FROM menu_items");
                                 <input type="file" name="img" class="form-input mt-1 block w-full border-gray-300 rounded-md shadow-sm" accept="image/*">
                             </div>
                             <div>
-                                <label class="text-xl block text-sm font-bold text-gray-700 mt-5" for="updateDescription">Description</label>
+                                <label class="text-xl block text-sm font-bold text-gray-700 mt-0" for="updateDescription">Description</label>
                                 <textarea name="description" id="updateDescription" class="form-textarea mt-1 block w-full border-gray-300 rounded-md shadow-sm" placeholder="Description"></textarea>
                             </div>
                         </div>
-                        <button type="submit" name="update" class="btn-red mt-3 font-bold py-2 px-4 rounded hover:bg-blue-500 transition">Update Menu Item</button>
+                        <button type="submit" name="update" class="btn-red mt-3 font-bold py-2 px-4 rounded hover:bg-blue-500 transition">Update</button>
                         <button type="button" class="mt-3 bg-gray-300 text-gray-700 font-bold py-2 px-4 rounded hover:bg-gray-200 transition" onclick="clearUpdateForm()">Clear</button>
                     </form>
                 </div>
@@ -469,7 +473,7 @@ $result = $conn->query("SELECT * FROM menu_items");
 
             <!-- Right Side: Menu Items Table -->
 <div class="w-full md:w-1/2"> <!-- 2 Kolom -->
-    <div class="bg-white shadow-md rounded-lg p-6 mb-7">
+    <div class="bg-white shadow-md rounded-lg p-4 mb-7">
         <h2 class="text-xl font-semibold mb-4">Menu Items</h2>
         <div class="menu-table-container overflow-x-auto overflow-y-auto h-120"> <!-- Allow horizontal and vertical scrolling -->
             <?php if ($result->num_rows > 0): ?>

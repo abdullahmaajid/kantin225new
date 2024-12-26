@@ -269,14 +269,14 @@ if (isset($_POST['export_to_excel'])) {
     <li>
       <a href="rekap.php">
         <img src="./image/logo/rekap.png" alt="Rekap Icon" class="sidebar-icon">
-        Rekap
+        Report
       </a>
     </li>
 
     <li>
       <a href="print.php">
         <img src="./image/logo/print.png" alt="Logout Icon" class="sidebar-icon">
-        Print Struk
+        Print
       </a>
     </li>
 
@@ -327,7 +327,7 @@ if (isset($_POST['export_to_excel'])) {
 
 <style>
     body {
-      background-color: #f7fafc; /* bg-gray-100 */
+      background-color: #f3f4f6; /* bg-gray-100 */
       display: flex;
       justify-content: center;
       align-items: center;
@@ -343,8 +343,9 @@ if (isset($_POST['export_to_excel'])) {
       width: 100%;
       margin-top: 0px;
       overflow-y: auto;
-      height: 830px; /* height of the container */
+  
     }
+
 </style>
 
 </head>
@@ -439,7 +440,7 @@ if (isset($_POST['export_to_excel'])) {
         .rounded-table {
             border-collapse: collapse; /* Menghindari border ganda antara sel */
             width: 100%;
-            height: 660px; /* Tinggi tabel diubah ke 300px */
+            height: 605px; /* Tinggi tabel diubah ke 300px */
             border-radius: 8px; /* Sudut membulat */
             overflow-y: auto; /* Menambahkan overflow vertikal untuk scroll */
             display: block; /* Mengubah menjadi block agar overflow bekerja */
@@ -455,6 +456,9 @@ if (isset($_POST['export_to_excel'])) {
         .rounded-table tr {
             border-bottom: 1px solid #ddd; /* Border horizontal */
         }
+
+
+        
     </style>
 </div>
 
@@ -467,7 +471,7 @@ if (isset($_POST['export_to_excel'])) {
 
 </styl>
 
-<table class="rounded-table bg-gray-50">
+<table class="rounded-table bg-gray-50 overflow-y-auto">
            
            
            <style>
@@ -480,16 +484,17 @@ if (isset($_POST['export_to_excel'])) {
             </style>
                 <thead class="custom-table-header">
                     <tr>
-                        <th class="px-4 py-2 border">ID</th>
-                        <th class="px-4 py-2 border">Nama Pelanggan</th>
-                        <th class="px-4 py-2 border">Tanggal</th>
-                        <th class="px-4 py-2 border">Metode Pembayaran</th>
-                        <th class="px-4 py-2 border">Total Harga</th>
-                        <th class="px-4 py-2 border">Jumlah Dibayar</th>
-                        <th class="px-4 py-2 border">Kembalian</th>
-                        <th class="px-4 py-2 border">Items Dipesan</th>
-                        <th class="px-4 py-2 border">Bukti Transfer</th>
-                        <th class="px-4 py-2 border">Dibuat Pada</th>
+                    <th class="px-4 py-2 border">ID</th>
+<th class="px-4 py-2 border">Customer Name</th>
+<th class="px-4 py-2 border">Date</th>
+<th class="px-4 py-2 border">Payment Method</th>
+<th class="px-4 py-2 border">Total Price</th>
+<th class="px-4 py-2 border">Amount Paid</th>
+<th class="px-4 py-2 border">Change</th>
+<th class="px-4 py-2 border">Ordered Items</th>
+<th class="px-4 py-2 border">Transfer Proof</th>
+<th class="px-4 py-2 border">Created At</th>
+
                     </tr>
                 </thead>
                 <tbody>

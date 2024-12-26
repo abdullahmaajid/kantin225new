@@ -143,6 +143,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     ::placeholder {
         color: rgba(255, 255, 255, 0.7);
     }
+
+
+    @media (max-width: 768px) {
+    .glass-effect {
+        padding: 2rem; /* Tambahkan padding pada form */
+        margin: 2rem; /* Untuk memberikan ruang di sisi layar kecil */
+    }
+
+    .glass-input {
+        padding-left: 3rem; /* Sesuaikan agar input lebih proporsional */
+    }
+
+    .solid-button {
+        font-size: 1rem; /* Sesuaikan ukuran tombol */
+        padding: 0.8rem; /* Tambahkan padding pada tombol */
+    }
+
+    .input-icon {
+        left: 0.5rem; /* Posisi ikon lebih proporsional */
+    }
+}
+
 </style>
 
 </head>
@@ -192,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <button type="submit" name="register" class="w-full solid-button py-2 rounded-lg hover:bg-blue-600 transition duration-300">Register</button>
                 <p class="text-center text-gray-300">
-                    Sudah punya akun? <a href="login.php" class="hover:underline" style="color: #da0010;">Login di sini</a>
+                Already have an account? <a href='login.php' class='hover:underline' style='color: #da0010;'>Log in here</a>
                 </p>
             </form>
         <?php else: ?>
@@ -213,7 +235,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <button type="submit" name="login" class="w-full solid-button py-2 rounded-lg hover:bg-blue-600 transition duration-300">Login</button>
                 <p class="text-center text-gray-300">
-                    Belum punya akun? <a href="login.php?action=register" class="hover:underline" style="color: #da0010;">Daftar di sini</a>
+                Don't have an account? <a href='login.php?action=register' class='hover:underline' style='color: #da0010;'>Register here</a>
                 </p>
             </form>
         <?php endif; ?>

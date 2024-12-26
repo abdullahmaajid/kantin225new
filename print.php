@@ -233,14 +233,14 @@ if (isset($_GET['order_id'])) {
     <li>
       <a href="rekap.php">
         <img src="./image/logo/rekap.png" alt="Rekap Icon" class="sidebar-icon">
-        Rekap
+        Report
       </a>
     </li>
 
     <li>
       <a href="print.php">
         <img src="./image/logo/print.png" alt="Logout Icon" class="sidebar-icon">
-        Print Struk
+        Print
       </a>
     </li>
 
@@ -312,16 +312,18 @@ if (isset($_GET['order_id'])) {
 
 
 <style>
+
         .order-container {
-            margin-top: 0px;
+            margin:30px;
+            margin-top: 70px;
             overflow-y: auto;
-            height: 800px;
+            height: 650px;
         }
     </style>
 </head>
 <body>
     <div class="container mx-auto p-8 bg-white rounded-lg shadow-md order-container">
-        <h2 class="text-2xl font-semibold mb-6 text-gray-800 text-center">Lihat Pesanan Tersedia</h2>
+        <h2 class="text-2xl font-semibold mb-6 text-gray-800 text-center">View Available Orders</h2>
 
 
         <style>
@@ -363,47 +365,48 @@ if (isset($_GET['order_id'])) {
         .order-box {
             margin-top: 0px;
             overflow-y: auto;
-            height: 560px;
+            height: 400px;
         }
     </style>
 
 <div class="flex flex-col md:flex-row gap-8">
         <!-- Detail Pesanan -->
         <div id="order-details" class="w-full md:w-1/3 p-6 bg-gray-50 rounded-lg shadow-lg order-box">
-            <h2 class="text-xl font-semibold text-gray-800 mb-4">Detail Pesanan</h2>
-                    <table class="w-full text-left text-gray-700">
-                        <tbody>
-                            <tr>
-                                <td class="font-semibold py-2">Nama Pelanggan</td>
-                                <td class="py-2">: <?= htmlspecialchars($order['customer_name']) ?></td>
-                            </tr>
-                            <tr>
-                                <td class="font-semibold py-2">Tanggal</td>
-                                <td class="py-2">: <?= htmlspecialchars($order['date']) ?></td>
-                            </tr>
-                            <tr>
-                                <td class="font-semibold py-2">Metode Pembayaran</td>
-                                <td class="py-2">: <?= htmlspecialchars($order['payment_method']) ?></td>
-                            </tr>
-                            <tr>
-                                <td class="font-semibold py-2">Total Harga</td>
-                                <td class="py-2">: <?= htmlspecialchars($order['total_price']) ?></td>
-                            </tr>
-                            <tr>
-                                <td class="font-semibold py-2">Jumlah Dibayar</td>
-                                <td class="py-2">: <?= htmlspecialchars($order['amount_paid']) ?></td>
-                            </tr>
-                            <tr>
-                                <td class="font-semibold py-2">Kembalian</td>
-                                <td class="py-2">: <?= htmlspecialchars($order['change_due']) ?></td>
-                            </tr>
-                            <tr>
-                                <td class="font-semibold py-2">Dibuat pada</td>
-                                <td class="py-2">: <?= htmlspecialchars($order['created_at']) ?></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+        <h3 class="text-xl font-semibold text-gray-800 mb-4">Order Details </h3>
+    <table class="w-full text-left text-sm text-gray-700">
+        <tbody>
+            <tr>
+                <td class="font-semibold py-1">Customer Name</td>
+                <td class="py-1">: <?= htmlspecialchars($order['customer_name']) ?></td>
+            </tr>
+            <tr>
+                <td class="font-semibold py-1">Date</td>
+                <td class="py-1">: <?= htmlspecialchars($order['date']) ?></td>
+            </tr>
+            <tr>
+                <td class="font-semibold py-1">Payment Method</td>
+                <td class="py-1">: <?= htmlspecialchars($order['payment_method']) ?></td>
+            </tr>
+            <tr>
+                <td class="font-semibold py-1">Total Price</td>
+                <td class="py-1">: <?= htmlspecialchars($order['total_price']) ?></td>
+            </tr>
+            <tr>
+                <td class="font-semibold py-1">Amount Paid</td>
+                <td class="py-1">: <?= htmlspecialchars($order['amount_paid']) ?></td>
+            </tr>
+            <tr>
+                <td class="font-semibold py-1">Change Due</td>
+                <td class="py-1">: <?= htmlspecialchars($order['change_due']) ?></td>
+            </tr>
+            <tr>
+                <td class="font-semibold py-1">Created At</td>
+                <td class="py-1">: <?= htmlspecialchars($order['created_at']) ?></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 
 
 
@@ -412,13 +415,11 @@ if (isset($_GET['order_id'])) {
         .order-item {
             margin-top: 0px;
             overflow-y: auto;
-            height: 560px;
+            height: 400px;
         }
     </style>
 
-    <div class="w-full md:w-2/3 p-6 bg-gray-50 rounded-lg shadow-lg order-item">
-        <h3 class="text-xl font-semibold text-gray-800 mb-4">Item Pesanan</h3>
-        <style>
+<style>
         .rounded-table {
             border-collapse: collapse; /* Menghindari border ganda antara sel */
             width: 100%;
@@ -440,43 +441,39 @@ if (isset($_GET['order_id'])) {
             border-bottom: 1px solid #ddd; /* Border horizontal */
         }
 
-        /* Hover effect for rows */
-        .rounded-table tr:hover {
-            background-color: #f5f5f5; /* Light gray background on hover */
-            cursor: pointer; /* Cursor changes to pointer */
-        }
-
-        /* Optional: Hover effect for table header */
-        .rounded-table th:hover {
-            background-color: #e0e0e0; /* Light gray for header hover */
-        }
+  
     </style>
-                     <table class="rounded-table">
-                        <thead>
-                            <tr class="table-header">
-                                <th class="p-2 border">Nama Item</th>
-                                <th class="p-2 border">Kuantitas</th>
-                                <th class="p-2 border">Harga</th>
-                                <th class="p-2 border">Total</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($order['items'] as $item): ?>
-                                <tr>
-                                    <td class="p-2 border"><?= htmlspecialchars($item['item_name']) ?></td>
-                                    <td class="p-2 border"><?= htmlspecialchars($item['quantity']) ?></td>
-                                    <td class="p-2 border"><?= htmlspecialchars($item['price']) ?></td>
-                                    <td class="p-2 border"><?= htmlspecialchars($item['total']) ?></td>
-                                </tr>
-                            <?php endforeach; ?>
-                        </tbody>
-                    </table>
-                </div>
+
+<div class="w-full md:w-2/3 p-6 bg-gray-50 rounded-lg shadow-lg order-item">
+    <h3 class="text-xl font-semibold text-gray-800 mb-4">Order Items</h3>
+    
+    <table class="rounded-table text-sm">
+        <thead>
+            <tr class="table-header">
+                <th class="p-2 border">Item Name</th>
+                <th class="p-2 border">Quantity</th>
+                <th class="p-2 border">Price</th>
+                <th class="p-2 border">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php foreach ($order['items'] as $item): ?>
+                <tr>
+                    <td class="p-2 border"><?= htmlspecialchars($item['item_name']) ?></td>
+                    <td class="p-2 border"><?= htmlspecialchars($item['quantity']) ?></td>
+                    <td class="p-2 border"><?= htmlspecialchars($item['price']) ?></td>
+                    <td class="p-2 border"><?= htmlspecialchars($item['total']) ?></td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
             </div>
 
             <!-- Tombol Cetak Struk -->
             <button onclick="generatePDF()" class="btn-green mt-6 w-full text-white font-semibold py-2 rounded-lg shadow-md transition duration-200">
-                Cetak Struk
+            Print Receipt
             </button>
 
 
@@ -532,7 +529,7 @@ if (isset($_GET['order_id'])) {
         yPosition += 8;
 
         // Order Items Table with left-aligned text and red background for header
-        const itemTableColumns = ["Item", "Qty", "Harga", "Total"];
+        const itemTableColumns = ["Item", "Qty", "Price", "Total"];
         const itemTableRows = [
             <?php foreach ($order['items'] as $item): ?>
                 [
@@ -590,13 +587,13 @@ if (isset($_GET['order_id'])) {
 
         // Order Details Section (No borders)
         const orderDetails = [
-            ["Nama Pelanggan", "<?= htmlspecialchars($order['customer_name']) ?>"],
-            ["Tanggal", "<?= htmlspecialchars($order['date']) ?>"],
-            ["Waktu Pesanan", "<?= htmlspecialchars($order['created_at']) ?>"],
-            ["Metode Pembayaran", "<?= htmlspecialchars($order['payment_method']) ?>"],
-            ["Total Harga", "<?= htmlspecialchars($order['total_price']) ?>"],
-            ["Dibayar", "<?= htmlspecialchars($order['amount_paid']) ?>"],
-            ["Kembalian", "<?= htmlspecialchars($order['change_due']) ?>"]
+            ["Customer Name", "<?= htmlspecialchars($order['customer_name']) ?>"],
+            ["Date", "<?= htmlspecialchars($order['date']) ?>"],
+            ["Order Time", "<?= htmlspecialchars($order['created_at']) ?>"],
+            ["Payment Method", "<?= htmlspecialchars($order['payment_method']) ?>"],
+            ["Total Price", "<?= htmlspecialchars($order['total_price']) ?>"],
+            ["Paid", "<?= htmlspecialchars($order['amount_paid']) ?>"],
+            ["Change", "<?= htmlspecialchars($order['change_due']) ?>"]
         ];
 
         doc.autoTable({
@@ -615,11 +612,11 @@ if (isset($_GET['order_id'])) {
             }
         });
 
-        // Get current date and day in Indonesian
+        // Get current date and day in English
         const currentDate = new Date();
-        const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+        const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
         const dayOfWeek = days[currentDate.getDay()];
-        const dateString = currentDate.toLocaleDateString('id-ID').replace(/\//g, '_'); // format as dd_mm_yyyy
+        const dateString = currentDate.toLocaleDateString('en-US').replace(/\//g, '_'); // format as mm_dd_yyyy
 
         const customerName = "<?= htmlspecialchars($order['customer_name']) ?>";
 
@@ -630,6 +627,7 @@ if (isset($_GET['order_id'])) {
         doc.save(filename);
     }
 </script>
+
 
 
 

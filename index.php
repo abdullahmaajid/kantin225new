@@ -229,6 +229,7 @@ $transfer_proofs = $conn->query("SELECT transfer_proof FROM orders WHERE transfe
         }
         /* Main content styles */
             .container {
+           
             z-index: 0; /* Lower z-index for main content */
             position: relative; /* Establish a positioning context */
         }   
@@ -349,14 +350,14 @@ $transfer_proofs = $conn->query("SELECT transfer_proof FROM orders WHERE transfe
     <li>
       <a href="rekap.php">
         <img src="./image/logo/rekap.png" alt="Rekap Icon" class="sidebar-icon">
-        Rekap
+        Report
       </a>
     </li>
 
     <li>
       <a href="print.php">
         <img src="./image/logo/print.png" alt="Logout Icon" class="sidebar-icon">
-        Print Struk
+        Print
       </a>
     </li>
 
@@ -433,18 +434,18 @@ $transfer_proofs = $conn->query("SELECT transfer_proof FROM orders WHERE transfe
 
 
 <style>
-    @media (min-width: 1025px){
+    @media (min-width: 1024px){
     #menuItems {
-    height: 560px; /* Default height for desktop */
+    height:553px; /* Default height for desktop */
     overflow-y: auto; /* Enable vertical scrolling */
 }
     }
 
 /* For tablets */
-@media (min-width: 769px) and (max-width: 1024px) {
+@media (min-width: 769px) and (max-width: 1023px) {
     #menuItems {
         overflow-y: auto; /* Enable vertical scrolling */
-        height: 825px; /* Set height to 100px for tablet */
+        height: 720px; /* Set height to 100px for tablet */
     }
 }
 
@@ -558,7 +559,7 @@ $transfer_proofs = $conn->query("SELECT transfer_proof FROM orders WHERE transfe
                             <input type="hidden" name="item_id" value="<?php echo $row['id']; ?>">
                             <div class="flex flex-col lg:flex-row items-stretch lg:items-center mt-2 space-y-2 lg:space-y-0 lg:space-x-2 mt-2">
                                 <input type="number" name="quantity" value="1" min="1" class="menu-item-quantity border border-gray-300 rounded-md py-1 px-2 w-full lg:w-16" placeholder="Qty">
-                                <button type="submit" name="add_to_cart" class="custom-add-to-cart-button text-white rounded-md py-1 px-4 w-full">Add to Cart</button>
+                                <button type="submit" name="add_to_cart" class="custom-add-to-cart-button text-white rounded-md py-1 px-4 w-full">Add</button>
                             </div>
                         </form>
 
@@ -680,17 +681,17 @@ $transfer_proofs = $conn->query("SELECT transfer_proof FROM orders WHERE transfe
     <h1 class="text-2xl font-bold mb-4 mt-4">Your Cart</h1>
 
     <style>
-@media (min-width: 1025px) {
+@media (min-width: 1024px) {
         .cart-scroll {
-    height: 255px; /* Default height for larger screens */
+    height: 250px; /* Default height for larger screens */
     overflow-y: auto;
         }
         }
 
 
-        @media (min-width: 769px) and (max-width: 1024px) {
+        @media (min-width: 769px) and (max-width: 1023px) {
         .cart-scroll {
-    height: 440px; /* Default height for larger screens */
+    height: 410px; /* Default height for larger screens */
     overflow-y: auto;
         }
         }
