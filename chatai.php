@@ -256,7 +256,7 @@ if (!isset($_SESSION['user_id'])) {
     <script type="module">
         import { GoogleGenerativeAI } from "@google/generative-ai";
 
-        const API_KEY = "AIzaSyDfjmSvom8myGKVvlN1Zti3-tAHM4QcR_A"; // Replace with your actual API key
+        const API_KEY = "AIzaSyBi0y8iFgydMDKUZmdYwVkB3-SLReAw3Jk"; // Replace with your actual API key
         const genAI = new GoogleGenerativeAI(API_KEY);
         const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
         
